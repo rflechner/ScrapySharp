@@ -29,4 +29,5 @@ syntax: glob
 build/*
 .fake/*
 NuGet/*
-
+*.git/*
+LICENSE.txt
