@@ -1,0 +1,2 @@
+- Introduce async methods for .Net >= 4.5
+- Add possibility to add special headers for using "NavigateToPage" (Pull Request #6)
