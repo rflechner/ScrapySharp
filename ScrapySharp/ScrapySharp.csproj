@@ -4,7 +4,6 @@
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2PAssets</TargetsForTfmSpecificBuildOutput>
 
     <AssemblyName>ScrapySharp</AssemblyName>
-    <Version>3.0.0-alpha1</Version>
     <Description>Scraping Framework containing :
 - a web client able to simulate a web browser.
 - an HtmlAgilityPack extension to select elements using css selector (like JQuery)</Description>
