@@ -16,18 +16,18 @@ using ScrapySharp.Extensions;
 
 class Example
 {
-	public void Main()
-	{
-		var divs = html.CssSelect(“div”);  //all div elements
-		var nodes = html.CssSelect(“div.content”); //all div elements with css class ‘content’
-		var nodes = html.CssSelect(“div.widget.monthlist”); //all div elements with the both css class
-		var nodes = html.CssSelect(“#postPaging”); //all HTML elements with the id postPaging
-		var nodes = html.CssSelect(“div#postPaging.testClass”); // all HTML elements with the id postPaging and css class testClass
+    public void Main()
+    {
+        var divs = html.CssSelect("div");  //all div elements
+        var nodes = html.CssSelect("div.content"); //all div elements with css class ‘content’
+        var nodes = html.CssSelect("div.widget.monthlist"); //all div elements with the both css class
+        var nodes = html.CssSelect("#postPaging"); //all HTML elements with the id postPaging
+        var nodes = html.CssSelect("div#postPaging.testClass"); // all HTML elements with the id postPaging and css class testClass
 
-		var nodes = html.CssSelect(“div.content > p.para”); //p elements who are direct children of div elements with css class ‘content’
- 
-		var nodes = html.CssSelect(“input[type=text].login”); // textbox with css class login
-	}
+        var nodes = html.CssSelect("div.content > p.para"); //p elements who are direct children of div elements with css class ‘content’
+
+        var nodes = html.CssSelect("input[type=text].login"); // textbox with css class login
+    }
 }
 ```
 
