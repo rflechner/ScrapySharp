@@ -56,6 +56,12 @@ WebPage blogPage = resultsPage.FindLinks(By.Text("romcyber blog | Just another W
 
 It's easy to use Scrapysharp in your project.
 
-A Nuget package exists [here](https://www.nuget.org/packages/ScrapySharp)
+A Nuget package exists on [nuget.org](https://www.nuget.org/packages/ScrapySharp) and on [myget](https://www.myget.org/feed/romcyber/package/nuget/ScrapySharp)
 
-Have fun!
+## News
+
+Scrapysharp V3 is a reborn.
+
+Old version under GPL license is still on [bitbucket](https://bitbucket.org/rflechner/scrapysharp/src)
+
+Version 3 is a conversion to .net standard 2.0 and a relicensing to MIT license.
