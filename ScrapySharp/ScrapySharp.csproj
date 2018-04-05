@@ -15,11 +15,11 @@
     <PackageTags>Scraping;html;css;linq;agility</PackageTags>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageIconUrl></PackageIconUrl>
-    <PackageProjectUrl>https://bitbucket.org/rflechner/scrapysharp/wiki/Home</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/rflechner/ScrapySharp</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/rflechner/ScrapySharp/blob/master/LICENSE</PackageLicenseUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>hg</RepositoryType>
-    <RepositoryUrl>https://bitbucket.org/rflechner/scrapysharp</RepositoryUrl>
+    <RepositoryUrl>https://github.com/rflechner/ScrapySharp.git</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.7.*" />

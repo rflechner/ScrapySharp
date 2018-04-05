@@ -1,3 +1,8 @@
+# 3.0.0-alpha2
+
+- dotnet standard 2.0
+- fix nuget meta data
+
 # 3.0.0-alpha1
 
 - dotnet standard 2.0
