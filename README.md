@@ -64,4 +64,4 @@ Scrapysharp V3 is a reborn.
 
 Old version under GPL license is still on [bitbucket](https://bitbucket.org/rflechner/scrapysharp/src)
 
-Version 3 is a conversion to .net standard 2.0 and a relicensing to MIT license.
+Version 3 is a conversion to .net standard 2.0 and a relicensing.
