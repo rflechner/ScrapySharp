@@ -1,3 +1,7 @@
+# 3.0.0
+
+Alpha seems to be stable so I release.
+
 # 3.0.0-alpha2
 
 - dotnet standard 2.0
