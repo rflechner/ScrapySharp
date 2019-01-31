@@ -459,5 +459,10 @@ namespace ScrapySharp.Network
 
             return collection[name];
         }
+
+        public CookieCollection GetCookieCollection(Uri url)
+        {
+            return cookieContainer.GetCookies(url);
+        }
     }
 }
