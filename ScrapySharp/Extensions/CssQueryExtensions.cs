@@ -21,6 +21,20 @@ namespace ScrapySharp.Extensions
             return executor.GetElements();
         }
 
+        public static IEnumerable<HtmlNode> CssSelect(this HtmlNode node, string[] expressions)
+        {
+            List<HtmlNode> elements = new List<HtmlNode>();
+            foreach (var expression in expressions)
+            {
+                var matchingElements = node.CssSelect(expression).ToList();
+
+                // Use a union to remove duplicates.
+                elements = elements.Union(matchingElements).ToList();
+            }
+
+            return elements.ToArray();
+        }
+
         public static IEnumerable<HtmlNode> CssSelectAncestors(this IEnumerable<HtmlNode> nodes, string expression)
         {
             var htmlNodes = nodes.SelectMany(node => CssSelectAncestors(node, expression)).ToArray();

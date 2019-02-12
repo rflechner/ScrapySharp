@@ -147,6 +147,18 @@ namespace ScrapySharp.Tests
         }
 
         [Test]
+        public void When_using_multiple_selector()
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(@"<html><body><hr /><hr id='beep'/><hr id='boop'/></body></html>");
+            var node = doc.DocumentNode;
+
+            var result = node.CssSelect(new string[] { "#beep", "#boop" }).ToArray();
+
+            Assert.AreEqual(result.Length, 2);
+        }
+
+        [Test]
         public void When_chain_methods()
         {
             var doc = new HtmlDocument();
