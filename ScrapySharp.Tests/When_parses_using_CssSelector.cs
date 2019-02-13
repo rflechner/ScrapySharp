@@ -155,7 +155,7 @@ namespace ScrapySharp.Tests
 
             var result = node.CssSelect(new string[] { "#beep", "#boop" }).ToArray();
 
-            Assert.AreEqual(result.Length, 2);
+            Assert.AreEqual(2, result.Length);
         }
 
         [Test]
