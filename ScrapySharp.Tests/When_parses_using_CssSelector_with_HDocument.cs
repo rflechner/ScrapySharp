@@ -136,7 +136,7 @@ namespace ScrapySharp.Tests
 
             var result = doc.CssSelect("hr[id^=bla]").ToArray();
 
-            Assert.AreEqual(result.Length, 1);
+            Assert.AreEqual(1, result.Length);
 
             Assert.AreEqual(1, doc.CssSelect("hr[id|=bla]").Count());
         }
@@ -149,7 +149,7 @@ namespace ScrapySharp.Tests
 
             var result = doc.CssSelect("hr[id$=ing]").ToArray();
 
-            Assert.AreEqual(result.Length, 2);
+            Assert.AreEqual(2, result.Length);
         }
 
         [Test]
