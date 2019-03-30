@@ -131,7 +131,7 @@ namespace ScrapySharp.Tests
 
             var result = node.CssSelect("hr[id^=bla]").ToArray();
 
-            Assert.AreEqual(result.Length, 1);
+            Assert.AreEqual(1, result.Length);
         }
 
         [Test]
@@ -143,7 +143,19 @@ namespace ScrapySharp.Tests
 
             var result = node.CssSelect("hr[id$=ing]").ToArray();
 
-            Assert.AreEqual(result.Length, 2);
+            Assert.AreEqual(2, result.Length);
+        }
+
+        [Test]
+        public void When_using_multiple_selector()
+        {
+            var doc = new HtmlDocument();
+            doc.LoadHtml(@"<html><body><hr /><hr id='beep'/><hr id='boop'/></body></html>");
+            var node = doc.DocumentNode;
+
+            var result = node.CssSelect(new string[] { "#beep", "#boop" }).ToArray();
+
+            Assert.AreEqual(2, result.Length);
         }
 
         [Test]
@@ -162,7 +174,6 @@ namespace ScrapySharp.Tests
             var tds1 = node.CssSelect("td").ToArray();
             Assert.AreEqual(6, tds1.Length);
 
-            
             var tds2 = trs1[1].CssSelect("td").ToArray();
             Assert.AreEqual(3, tds2.Length);
         }

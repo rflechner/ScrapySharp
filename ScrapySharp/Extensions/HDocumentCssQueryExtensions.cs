@@ -24,6 +24,11 @@ namespace ScrapySharp.Extensions
             return nodes.SelectMany(node => CssSelect(node, expression));
         }
 
+        public static IEnumerable<HElement> CssSelect(this IEnumerable<HElement> nodes, string[] expressions)
+        {
+            return nodes.SelectMany(node => CssSelect(nodes, expressions));
+        }
+
         public static IEnumerable<HElement> CssSelectAncestors(this IEnumerable<HElement> nodes, string expression)
         {
             return nodes.SelectMany(node => CssSelectAncestors(node, expression)).Distinct();
