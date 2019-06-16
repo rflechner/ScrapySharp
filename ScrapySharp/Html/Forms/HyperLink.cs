@@ -21,6 +21,16 @@ namespace ScrapySharp.Html.Forms
             get { return node.InnerText; }
         }
 
+        public string Href
+        {
+            get
+            {
+                var ret = string.Empty;
+                if (node.HasAttributes)
+                    ret = node.Attributes["href"].Value;
+                return ret;
+            }
+        }
         public WebPage Click()
         {
             var href = node.GetAttributeValue("href", string.Empty);
