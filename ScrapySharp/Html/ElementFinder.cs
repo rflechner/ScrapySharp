@@ -43,6 +43,12 @@ namespace ScrapySharp.Html
                            let names = @class.Split(new []{' '}, StringSplitOptions.RemoveEmptyEntries)
                            where names.Contains(query)
                            select n;
+                case ElementSearchKind.Title:
+                    return from n in html.Descendants(tagName)
+                           let title = n.GetAttributeValue("title", string.Empty)
+                           let fixedTitle = title.Replace("  ", " ")
+                           where string.IsNullOrEmpty(fixedTitle) ? string.IsNullOrEmpty(query) : fixedTitle.Equals(query, comparisonType)
+                           select n;
                 default:
                     return new List<HtmlNode>();
             }

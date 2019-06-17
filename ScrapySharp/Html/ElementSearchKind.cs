@@ -5,6 +5,7 @@ namespace ScrapySharp.Html
         Text,
         Id,
         Name,
-        Class
+        Class,
+        Title
     }
 }
