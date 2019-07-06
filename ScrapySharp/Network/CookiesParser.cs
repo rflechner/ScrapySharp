@@ -19,19 +19,24 @@ namespace ScrapySharp.Network
         {
             var list = new List<KeyValuePair<string, string>>();
 
-            var match = splitCookiesRegex.Match(cookiesExpression);
+            var cookiesArr = cookiesExpression.Split(",".ToCharArray());
 
-            while (match.Success)
+            foreach (var cookieString in cookiesArr)
             {
-                if (match.Groups["name"].Success && match.Groups["val"].Success)
+                var match = splitCookiesRegex.Match(cookieString);
+
+                while (match.Success)
                 {
-                    try
+                    if (match.Groups["name"].Success && match.Groups["val"].Success)
                     {
-                        list.Add(new KeyValuePair<string, string>(match.Groups["name"].Value, match.Groups["val"].Value));
+                        try
+                        {
+                            list.Add(new KeyValuePair<string, string>(match.Groups["name"].Value, match.Groups["val"].Value));
+                        }
+                        catch (CookieException) { }
                     }
-                    catch (CookieException) { }
+                    match = match.NextMatch();
                 }
-                match = match.NextMatch();
             }
 
             return list;
