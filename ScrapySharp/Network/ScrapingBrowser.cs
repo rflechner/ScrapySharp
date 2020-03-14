@@ -370,7 +370,7 @@ namespace ScrapySharp.Network
 
             if (verb == HttpVerb.Post)
             {
-                var stream = await request.GetRequestStreamAsync();
+                var stream = await request.GetRequestStreamAsync().ConfigureAwait(false);
                 using (var writer = new StreamWriter(stream))
                 {
                     writer.Write(data);
@@ -378,7 +378,7 @@ namespace ScrapySharp.Network
                 }
             }
 
-            return await GetResponseAsync(url, request, 0, Encoding.GetBytes(data));
+            return await GetResponseAsync(url, request, 0, Encoding.GetBytes(data)).ConfigureAwait(false);
         }
 
         public WebPage NavigateToPage(Uri url, HttpVerb verb, NameValueCollection data)

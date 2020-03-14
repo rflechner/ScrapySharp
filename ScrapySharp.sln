@@ -4,16 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6755677C-979E-4D67-A21F-FAAF7598A993}"
-	ProjectSection(SolutionItems) = preProject
-		build.cmd = build.cmd
-		build.fsx = build.fsx
-		ReleaseNotes.txt = ReleaseNotes.txt
-		ScrapySharp.nuspec = ScrapySharp.nuspec
-	EndProjectSection
 	GlobalSection(HgVSProperties) = preSolution
 		SolutionIsControlled = True
 		SolutionBindings = <Solution Location In Database>
 	EndGlobalSection
+ProjectSection(SolutionItems) = preProject
+	build.ps1 = build.ps1
+EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrapySharp", "ScrapySharp\ScrapySharp.csproj", "{19858AEA-E842-4633-AF1B-110ED4FE3770}"
 	GlobalSection(HgVSProperties) = preSolution
