@@ -269,7 +269,16 @@ namespace ScrapySharp.Network
         {
             referer = url;
             request.AllowAutoRedirect = AllowAutoRedirect;
-            var response = (HttpWebResponse) await request.GetResponseAsync();
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (WebException e)
+            {
+                response = (HttpWebResponse)e.Response;
+            }
+		
             var headers = response.Headers;
 
             if (!IgnoreCookies)

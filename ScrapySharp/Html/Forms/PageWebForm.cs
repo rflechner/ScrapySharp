@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
 using ScrapySharp.Network;
@@ -155,6 +156,28 @@ namespace ScrapySharp.Html.Forms
 
             url = browser.Referer.Combine(action);
             return browser.NavigateToPage(url, method, SerializeFormFields());
+        }
+
+        public async Task<WebPage> SubmitAsync(Uri url, HttpVerb verb)
+        {
+            return await browser.NavigateToPageAsync(url, verb, SerializeFormFields());
+        }
+
+        public async Task<WebPage> SubmitAsync(Uri url)
+        {
+            return await browser.NavigateToPageAsync(url, method, SerializeFormFields());
+        }
+
+        public async Task<WebPage> SubmitAsync()
+        {
+            Uri url;
+            if (Uri.TryCreate(Action, UriKind.Absolute, out url))
+            {
+                return await browser.NavigateToPageAsync(url, method, SerializeFormFields());
+            }
+
+            url = browser.Referer.Combine(action);
+            return await browser.NavigateToPageAsync(url, method, SerializeFormFields());
         }
 
         public HttpVerb Method
