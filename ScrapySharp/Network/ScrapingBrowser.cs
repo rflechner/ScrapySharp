@@ -370,7 +370,7 @@ namespace ScrapySharp.Network
 
             if (verb == HttpVerb.Post)
             {
-                var stream = request.GetRequestStream();
+                var stream = await request.GetRequestStreamAsync();
                 using (var writer = new StreamWriter(stream))
                 {
                     writer.Write(data);
