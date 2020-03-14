@@ -40,5 +40,10 @@ namespace ScrapySharp.Html
         {
             return new By(query, ElementSearchKind.Class, comparisonType);
         }
+
+        public static By Title(string query, StringComparison comparisonType = StringComparison.CurrentCulture)
+        {
+            return new By(query, ElementSearchKind.Title, comparisonType);
+        }
     }
 }
