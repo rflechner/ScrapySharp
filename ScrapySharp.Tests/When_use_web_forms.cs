@@ -7,6 +7,7 @@ using ScrapySharp.Html.Dom;
 using ScrapySharp.Html.Forms;
 using ScrapySharp.Extensions;
 using System.Linq;
+using System.Threading.Tasks;
 using ScrapySharp.Network;
 
 namespace ScrapySharp.Tests
@@ -15,7 +16,7 @@ namespace ScrapySharp.Tests
     public class When_use_web_forms
     {
         [Test,Ignore("Integration")]
-        public void When_browsing_using_helpers()
+        public async Task When_browsing_using_helpers()
         {
             ScrapingBrowser browser = new ScrapingBrowser();
 
@@ -27,11 +28,11 @@ namespace ScrapySharp.Tests
             PageWebForm form = homePage.FindFormById("sb_form");
             form["q"] = "scrapysharp";
             form.Method = HttpVerb.Get;
-            WebPage resultsPage = form.Submit();
+            WebPage resultsPage = await form.SubmitAsync();
 
             HtmlNode[] resultsLinks = resultsPage.Html.CssSelect("div.sb_tlst h3 a").ToArray();
 
-            WebPage blogPage = resultsPage.FindLinks(By.Text("romcyber blog | Just another WordPress site")).Single().Click();
+            WebPage blogPage = await resultsPage.FindLinks(By.Text("romcyber blog | Just another WordPress site")).Single().ClickAsync();
         }
 
         [Test]
@@ -66,8 +67,6 @@ namespace ScrapySharp.Tests
             var form = html.CssSelect("form").SingleOrDefault();
 
             Assert.IsNotNull(form);
-
-
         }
     }
 }

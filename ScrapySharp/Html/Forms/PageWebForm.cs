@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 using HtmlAgilityPack;
@@ -13,11 +14,11 @@ namespace ScrapySharp.Html.Forms
     public class PageWebForm
     {
         private readonly HtmlNode html;
-        private readonly ScrapingBrowser browser;
+        private readonly IScrapingBrowser browser;
         private HttpVerb method;
         private string action;
 
-        public PageWebForm(HtmlNode html, ScrapingBrowser browser)
+        public PageWebForm(HtmlNode html, IScrapingBrowser browser)
         {
             this.html = html;
             this.browser = browser;
@@ -136,26 +137,22 @@ namespace ScrapySharp.Html.Forms
             }
         }
 
-        public WebPage Submit(Uri url, HttpVerb verb)
+        public Task<WebPage> SubmitAsync(Uri url, HttpVerb verb, CancellationToken cancellationToken = default)
         {
-            return browser.NavigateToPage(url, verb, SerializeFormFields());
+            return browser.NavigateToPageAsync(url, verb, SerializeFormFields(), cancellationToken:cancellationToken);
         }
 
-        public WebPage Submit(Uri url)
+        public Task<WebPage> SubmitAsync(Uri url, CancellationToken cancellationToken = default)
         {
-            return browser.NavigateToPage(url, method, SerializeFormFields());
+            return browser.NavigateToPageAsync(url, method, SerializeFormFields(), cancellationToken: cancellationToken);
         }
 
-        public WebPage Submit()
+        public Task<WebPage> SubmitAsync(CancellationToken cancellationToken = default)
         {
-            Uri url;
-            if (Uri.TryCreate(Action, UriKind.Absolute, out url))
-            {
-                return browser.NavigateToPage(url, method, SerializeFormFields());
-            }
+            if (Uri.TryCreate(Action, UriKind.Absolute, out var url))
+                return browser.NavigateToPageAsync(url, method, SerializeFormFields(), cancellationToken: cancellationToken);
 
-            url = browser.Referer.Combine(action);
-            return browser.NavigateToPage(url, method, SerializeFormFields());
+            return browser.NavigateToPageAsync(browser.Referer.Combine(action), method, SerializeFormFields(), cancellationToken: cancellationToken);
         }
 
         public async Task<WebPage> SubmitAsync(Uri url, HttpVerb verb)

@@ -10,12 +10,12 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using ScrapySharp.Extensions;
 
 namespace ScrapySharp.Network
 {
-    public class ScrapingBrowser
+    [Obsolete("Please use ModernScrapingBrowser instead.")]
+    public class ScrapingBrowser : IScrapingBrowser
     {
         private CookieContainer cookieContainer;
         private Uri referer;
@@ -48,16 +48,19 @@ namespace ScrapySharp.Network
             cookieContainer = new CookieContainer();
         }
 
+        public Task<WebResource> DownloadWebResourceAsync(Uri url, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(DownloadWebResource(url));
+        }
+        
         public WebResource DownloadWebResource(Uri url)
         {
             var response = ExecuteRequest(url, HttpVerb.Get, new NameValueCollection());
             var memoryStream = new MemoryStream();
             var responseStream = response.GetResponseStream();
-
-            if (responseStream != null)
-                responseStream.CopyTo(memoryStream);
-
-            responseStream.Close();
+            responseStream?.CopyTo(memoryStream);
+            responseStream?.Close();
+            
             return new WebResource(memoryStream, response.Headers["Last-Modified"], url, !IsCached(response.Headers["Cache-Control"]), response.ContentType);
         }
 
@@ -82,7 +85,7 @@ namespace ScrapySharp.Network
             return AjaxDownloadStringAsync(url).Result;
         }
 
-        public async Task<string> AjaxDownloadStringAsync(Uri url)
+        public async Task<string> AjaxDownloadStringAsync(Uri url, CancellationToken cancellationToken = default)
         {
             var request = CreateRequest(url, HttpVerb.Get);
             request.Headers["X-Prototype-Version"] = "1.6.1";
@@ -90,13 +93,13 @@ namespace ScrapySharp.Network
 
             return await GetResponseAsync(url, request, 0, new byte[0]);
         }
-
+        
         public string DownloadString(Uri url)
         {
             return DownloadStringAsync(url).Result;
         }
 
-        public async Task<string> DownloadStringAsync(Uri url)
+        public async Task<string> DownloadStringAsync(Uri url, CancellationToken cancellationToken = default)
         {
             var request = CreateRequest(url, HttpVerb.Get);
             return await GetResponseAsync(url, request, 0, new byte[0]);
@@ -298,6 +301,8 @@ namespace ScrapySharp.Network
             return response;
         }
 
+        Uri IScrapingBrowser.Referer { get; set; }
+
         public void SetCookies(Uri cookieUrl, string cookiesExpression)
         {
             var parser = new CookiesParser(cookieUrl.Host);
@@ -314,13 +319,23 @@ namespace ScrapySharp.Network
             }
         }
 
+        public Task<string> NavigateToAsync(Uri url, HttpVerb verb, string data, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(NavigateTo(url, verb, data));
+        }
+
+        public Task<string> NavigateToAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(NavigateTo(url, verb, data));
+        }
+
         public WebResponse ExecuteRequest(Uri url, HttpVerb verb, NameValueCollection data)
         {
-            return ExecuteRequest(url, verb, GetHttpPostVars(data));
+            return ExecuteRequest(url, verb, data.ToHttpVars());
         }
         public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpVerb verb, NameValueCollection data)
         {
-            return await ExecuteRequestAsync(url, verb, GetHttpPostVars(data));
+            return await ExecuteRequestAsync(url, verb, data.ToHttpVars());
         }
 
         public WebResponse ExecuteRequest(Uri url, HttpVerb verb, string data)
@@ -328,7 +343,7 @@ namespace ScrapySharp.Network
             return ExecuteRequestAsync(url, verb, data).Result;
         }
 
-        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpVerb verb, string data, string contentType = null)
+        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpVerb verb, string data, string contentType = null, CancellationToken cancellationToken = default)
         {
             var path = string.IsNullOrEmpty(data)
                               ? url.AbsoluteUri
@@ -354,17 +369,14 @@ namespace ScrapySharp.Network
             return await GetWebResponseAsync(url, request);
         }
 
-        public string NavigateTo(Uri url, HttpVerb verb, string data)
-        {
-            return NavigateToPage(url, verb, data);
-        }
+        public string NavigateTo(Uri url, HttpVerb verb, string data) => NavigateToPage(url, verb, data);
 
         public WebPage NavigateToPage(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null)
         {
             return NavigateToPageAsync(url, verb, data, contentType).Result;
         }
 
-        public async Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null)
+        public async Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null, CancellationToken cancellationToken = default)
         {
             var path = string.IsNullOrEmpty(data)
                               ? url.AbsoluteUri
@@ -390,14 +402,19 @@ namespace ScrapySharp.Network
             return await GetResponseAsync(url, request, 0, Encoding.GetBytes(data)).ConfigureAwait(false);
         }
 
+        public Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult(NavigateToPage(url, verb, data.ToHttpVars()));
+        }
+
         public WebPage NavigateToPage(Uri url, HttpVerb verb, NameValueCollection data)
         {
-            return NavigateToPage(url, verb, GetHttpPostVars(data));
+            return NavigateToPage(url, verb, data.ToHttpVars());
         }
 
         public string NavigateTo(Uri url, HttpVerb verb, NameValueCollection data)
         {
-            return NavigateTo(url, verb, GetHttpPostVars(data));
+            return NavigateTo(url, verb, data.ToHttpVars());
         }
 
         private static string ToMethod(HttpVerb verb)
@@ -421,24 +438,6 @@ namespace ScrapySharp.Network
 				default:
                     throw new ArgumentOutOfRangeException("verb");
             }
-        }
-
-        public static string GetHttpPostVars(NameValueCollection variables)
-        {
-            var builder = new StringBuilder();
-
-            for (int i = 0; i < variables.Count; i++)
-            {
-                var key = variables.GetKey(i);
-                var values = variables.GetValues(i);
-                if (values != null)
-                    foreach (var value in values)
-                        builder.AppendFormat("{0}={1}", HttpUtility.UrlEncode(key), HttpUtility.UrlEncode(value));
-                if (i < variables.Count - 1)
-                    builder.Append("&");
-            }
-
-            return builder.ToString();
         }
 
         public FakeUserAgent UserAgent { get; set; }

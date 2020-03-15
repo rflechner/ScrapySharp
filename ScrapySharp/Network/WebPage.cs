@@ -8,14 +8,15 @@ using HtmlAgilityPack;
 using ScrapySharp.Cache;
 using ScrapySharp.Extensions;
 using System.Linq;
+using System.Threading.Tasks;
 using ScrapySharp.Html;
 using ScrapySharp.Html.Forms;
 
 namespace ScrapySharp.Network
 {
-    public class WebPage
+    public sealed class WebPage
     {
-        private readonly ScrapingBrowser browser;
+        private readonly IScrapingBrowser browser;
         private readonly Uri absoluteUrl;
         private readonly RawRequest rawRequest;
         private readonly RawResponse rawResponse;
@@ -33,7 +34,7 @@ namespace ScrapySharp.Network
             };
         public Encoding Encoding { get; private set; }
 
-        public WebPage(ScrapingBrowser browser, Uri absoluteUrl, bool autoDownloadPagesResources, RawRequest rawRequest, RawResponse rawResponse, 
+        public WebPage(IScrapingBrowser browser, Uri absoluteUrl, bool autoDownloadPagesResources, RawRequest rawRequest, RawResponse rawResponse, 
             Encoding encoding, bool autoDetectCharsetEncoding)
         {
             this.browser = browser;
@@ -51,7 +52,8 @@ namespace ScrapySharp.Network
             if (autoDownloadPagesResources)
             {
                 LoadBaseUrl();
-                DownloadResources();
+                // TODO: lazy download
+                DownloadResourcesAsync().GetAwaiter().GetResult();
             }
         }
 
@@ -160,7 +162,7 @@ namespace ScrapySharp.Network
             return page.content;
         }
 
-        private void DownloadResources()
+        private async Task DownloadResourcesAsync()
         {
             var resourceUrls = GetResourceUrls();
 
@@ -173,7 +175,7 @@ namespace ScrapySharp.Network
 
                 try
                 {
-                    WebResource resource = browser.DownloadWebResource(url);
+                    WebResource resource = await browser.DownloadWebResourceAsync(url).ConfigureAwait(false);
                     resources.Add(resource);
                     if (!resource.ForceDownload || !string.IsNullOrEmpty(resource.LastModified))
                         WebResourceStorage.Current.Save(resource);
@@ -222,7 +224,7 @@ namespace ScrapySharp.Network
             return resourceUrls;
         }
 
-        public ScrapingBrowser Browser
+        public IScrapingBrowser Browser
         {
             get { return browser; }
         }
@@ -255,10 +257,10 @@ namespace ScrapySharp.Network
         private static readonly Regex urlInCssRegex = new Regex(@"url \s* [(] \s* (?<url>[^)\r\n]+) \s* [)]", 
             RegexOptions.Compiled | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace);
 
-        public void SaveSnapshot(string path)
+        public async Task SaveSnapshot(string path)
         {
             if (!browser.AutoDownloadPagesResources)
-                DownloadResources();
+                await DownloadResourcesAsync().ConfigureAwait(false);
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -276,14 +278,17 @@ namespace ScrapySharp.Network
                 if (!string.IsNullOrEmpty(resource.ContentType) && resource.ContentType.EndsWith("css", StringComparison.InvariantCultureIgnoreCase))
                 {
                     var textContent = resource.GetTextContent();
-                    textContent = RewriteCssUrls(path, textContent, resource.AbsoluteUrl.ToString());
+                    textContent = await RewriteCssUrls(path, textContent, resource.AbsoluteUrl.ToString()).ConfigureAwait(false);
                     File.WriteAllText(Path.Combine(path, fileName), textContent);
                 }
                 else
-                    File.WriteAllBytes(Path.Combine(path, fileName), resource.Content.ToArray());
+                {
+                    await using var dumpFile = File.OpenWrite(Path.Combine(path, fileName));
+                    await resource.Content.CopyToAsync(dumpFile).ConfigureAwait(false);
+                }
             }
 
-            var outerHtml = RewriteCssUrls(path, Html.OuterHtml, AbsoluteUrl.ToString());
+            var outerHtml = await RewriteCssUrls(path, Html.OuterHtml, AbsoluteUrl.ToString()).ConfigureAwait(false);
             File.WriteAllText(Path.Combine(path, "page.html"), outerHtml);
         }
 
@@ -305,7 +310,7 @@ namespace ScrapySharp.Network
             }
         }
 
-        private string RewriteCssUrls(string path, string textContent, string rootUrl)
+        private async Task<string> RewriteCssUrls(string path, string textContent, string rootUrl)
         {
             var match = urlInCssRegex.Match(textContent);
             while (match.Success)
@@ -318,8 +323,10 @@ namespace ScrapySharp.Network
 
                 try
                 {
-                    var image = browser.DownloadWebResource(GetFullResourceUrl(url, new Uri(leftPart)));
-                    File.WriteAllBytes(Path.Combine(path, imageId), image.Content.ToArray());
+                    var image = await browser.DownloadWebResourceAsync(GetFullResourceUrl(url, new Uri(leftPart)));
+                    
+                    await using var dumpFile = File.OpenWrite(Path.Combine(path, imageId));
+                    await image.Content.CopyToAsync(dumpFile).ConfigureAwait(false);
                 }
                 catch
                 {

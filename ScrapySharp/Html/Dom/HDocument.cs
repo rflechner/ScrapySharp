@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,7 @@ namespace ScrapySharp.Html.Dom
             Children = new List<HElement>();
         }
 
+        [Obsolete("Please use HTMLAgilityPack instead")]
         public static HDocument Parse(string source)
         {
             var codeReader = new CodeReader(source);

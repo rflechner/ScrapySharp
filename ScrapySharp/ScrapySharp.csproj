@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2PAssets</TargetsForTfmSpecificBuildOutput>
 
     <AssemblyName>ScrapySharp</AssemblyName>
@@ -20,11 +20,12 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>hg</RepositoryType>
     <RepositoryUrl>https://github.com/rflechner/ScrapySharp.git</RepositoryUrl>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.7.*" />
-    <PackageReference Include="FSharp.Core" Version="4.*" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.5.0-preview1-26216-02" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.22" />
+    <PackageReference Include="FSharp.Core" Version="4.7.0" />
+    <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" PrivateAssets="All" />
