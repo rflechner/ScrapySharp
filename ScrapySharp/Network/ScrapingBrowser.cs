@@ -269,7 +269,16 @@ namespace ScrapySharp.Network
         {
             referer = url;
             request.AllowAutoRedirect = AllowAutoRedirect;
-            var response = (HttpWebResponse) await request.GetResponseAsync();
+            HttpWebResponse response;
+            try
+            {
+                response = (HttpWebResponse)await request.GetResponseAsync();
+            }
+            catch (WebException e)
+            {
+                response = (HttpWebResponse)e.Response;
+            }
+		
             var headers = response.Headers;
 
             if (!IgnoreCookies)
@@ -370,7 +379,7 @@ namespace ScrapySharp.Network
 
             if (verb == HttpVerb.Post)
             {
-                var stream = request.GetRequestStream();
+                var stream = await request.GetRequestStreamAsync();
                 using (var writer = new StreamWriter(stream))
                 {
                     writer.Write(data);
