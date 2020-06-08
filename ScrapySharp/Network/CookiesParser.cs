@@ -8,8 +8,9 @@ namespace ScrapySharp.Network
     public class CookiesParser
     {
         private readonly string defaultDomain;
-        private static readonly Regex splitCookiesRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>[^;]+)?[,;]+", RegexOptions.Compiled);
-
+        private static readonly Regex splitCookiesRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>[^;]+)?[;]+", RegexOptions.Compiled);
+        private static readonly Regex splitCookiesCsvRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>.*?),(?=[^,]+?(?:=|$))+", RegexOptions.Compiled);
+        
         public CookiesParser(string defaultDomain)
         {
             this.defaultDomain = defaultDomain;
@@ -19,7 +20,11 @@ namespace ScrapySharp.Network
         {
             var list = new List<KeyValuePair<string, string>>();
 
-            var match = splitCookiesRegex.Match(cookiesExpression);
+            Match match;
+            if (cookiesExpression.Contains(";"))
+                match = splitCookiesRegex.Match(cookiesExpression);
+            else
+                match = splitCookiesCsvRegex.Match(cookiesExpression);
 
             while (match.Success)
             {
@@ -45,7 +50,7 @@ namespace ScrapySharp.Network
             for (int i = 0; i < keyValuePairs.Count; i++)
             {
                 var pair = keyValuePairs[i];
-                if (pair.Key.Equals("path", StringComparison.InvariantCultureIgnoreCase) 
+                if (pair.Key.Equals("path", StringComparison.InvariantCultureIgnoreCase)
                     || pair.Key.Equals("domain", StringComparison.InvariantCultureIgnoreCase)
                     || pair.Key.Equals("expires", StringComparison.InvariantCultureIgnoreCase))
                     continue;
