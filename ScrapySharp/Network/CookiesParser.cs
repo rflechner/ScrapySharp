@@ -8,8 +8,9 @@ namespace ScrapySharp.Network
     public class CookiesParser
     {
         private readonly string defaultDomain;
-        private static readonly Regex splitCookiesRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>[^;]+)?[,;]+", RegexOptions.Compiled);
-
+        private static readonly Regex splitCookiesRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>[^;]+)?[;]+", RegexOptions.Compiled);
+        private static readonly Regex splitCookiesCsvRegex = new Regex(@"\s*(?<name>[^=]+)=(?<val>.*?),(?=[^,]+?(?:=|$))+", RegexOptions.Compiled);
+        
         public CookiesParser(string defaultDomain)
         {
             this.defaultDomain = defaultDomain;
@@ -19,24 +20,23 @@ namespace ScrapySharp.Network
         {
             var list = new List<KeyValuePair<string, string>>();
 
-            var cookiesArr = cookiesExpression.Split(",".ToCharArray());
+            Match match;
+            if (cookiesExpression.Contains(";"))
+                match = splitCookiesRegex.Match(cookiesExpression);
+            else
+                match = splitCookiesCsvRegex.Match(cookiesExpression);
 
-            foreach (var cookieString in cookiesArr)
+            while (match.Success)
             {
-                var match = splitCookiesRegex.Match(cookieString);
-
-                while (match.Success)
+                if (match.Groups["name"].Success && match.Groups["val"].Success)
                 {
-                    if (match.Groups["name"].Success && match.Groups["val"].Success)
+                    try
                     {
-                        try
-                        {
-                            list.Add(new KeyValuePair<string, string>(match.Groups["name"].Value, match.Groups["val"].Value));
-                        }
-                        catch (CookieException) { }
+                        list.Add(new KeyValuePair<string, string>(match.Groups["name"].Value, match.Groups["val"].Value));
                     }
-                    match = match.NextMatch();
+                    catch (CookieException) { }
                 }
+                match = match.NextMatch();
             }
 
             return list;
@@ -50,7 +50,7 @@ namespace ScrapySharp.Network
             for (int i = 0; i < keyValuePairs.Count; i++)
             {
                 var pair = keyValuePairs[i];
-                if (pair.Key.Equals("path", StringComparison.InvariantCultureIgnoreCase) 
+                if (pair.Key.Equals("path", StringComparison.InvariantCultureIgnoreCase)
                     || pair.Key.Equals("domain", StringComparison.InvariantCultureIgnoreCase)
                     || pair.Key.Equals("expires", StringComparison.InvariantCultureIgnoreCase))
                     continue;

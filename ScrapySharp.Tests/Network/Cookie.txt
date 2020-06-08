@@ -1,0 +1,1 @@
+﻿key1=204=eBL9WYALz-YPXedwGc-utNT3YXlx7moCeN-dvDDl-7xYtHIZtPEr0OZ2bKWtEJWInrKuEnlR_-JFXZ4mMYIVQrPcTxGCZCCHoeUpdz1kU3cMa38TGrn-uaB6gH7D7A_XKa5bJvjbkatI3mvnPNgjJfd4QrHeDu8hms-c9b6to04; key2=this is a test value; expires=Tue, 08-Dec-2020 01:44:28 GMT; path=/; domain=.localhost.fakedomain; HttpOnly

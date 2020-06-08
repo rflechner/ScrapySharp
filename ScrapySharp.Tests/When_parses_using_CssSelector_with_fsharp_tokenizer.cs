@@ -1,11 +1,10 @@
 // ReSharper disable InconsistentNaming
 
-using System.Linq;
 using HtmlAgilityPack;
 using NUnit.Framework;
 using ScrapySharp.Core;
 using ScrapySharp.Extensions;
-using ScrapySharp.Core;
+using System.Linq;
 
 namespace ScrapySharp.Tests
 {
