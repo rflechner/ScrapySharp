@@ -30,6 +30,7 @@ namespace ScrapySharp.Network
             Language = CultureInfo.CreateSpecificCulture("EN-US");
             UseDefaultCookiesParser = true;
             IgnoreCookies = false;
+            SkipCertificateValidation = false;
             ProtocolVersion = HttpVersion.Version10;
             KeepAlive = false;
             Proxy = WebRequest.DefaultWebProxy;
@@ -158,6 +159,9 @@ namespace ScrapySharp.Network
             }
             else
                 request.SendChunked = SendChunked;
+
+            if (SkipCertificateValidation)
+                request.ServerCertificateValidationCallback = delegate { return true; };
 
             return request;
         }
@@ -448,6 +452,8 @@ namespace ScrapySharp.Network
         public bool UseDefaultCookiesParser { get; set; }
 
         public bool IgnoreCookies { get; set; }
+
+        public bool SkipCertificateValidation { get; set; }
 
         public TimeSpan Timeout { get; set; }
 

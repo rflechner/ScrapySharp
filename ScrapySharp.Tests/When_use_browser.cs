@@ -67,6 +67,27 @@ namespace ScrapySharp.Tests
 
             Assert.AreNotEqual(html1, html2);
         }
-        
+
+        [Test]
+        public void When_skipping_certificate_validation()
+        {
+            var uri = new Uri("https://expired.badssl.com/");
+
+            var browser1 = new ScrapingBrowser {
+                SkipCertificateValidation = false };
+
+            var hasException = false;
+            try { browser1.NavigateToPage(uri); }
+            catch (Exception) { hasException = true; }
+
+            Assert.IsTrue(hasException);
+
+            var browser2 = new ScrapingBrowser() {
+                SkipCertificateValidation = true };
+
+            var page2 = browser2.NavigateToPage(uri);
+
+            Assert.AreEqual(200, page2.RawResponse.StatusCode);
+        }
     }
 }
