@@ -5,7 +5,6 @@ using HtmlAgilityPack;
 using NUnit.Framework;
 using ScrapySharp.Core;
 using ScrapySharp.Extensions;
-using ScrapySharp.Core;
 
 namespace ScrapySharp.Tests
 {
