@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 using ScrapySharp.Extensions;
@@ -29,9 +30,9 @@ namespace ScrapySharp.Html.Forms
                 return null;
 
             if (Uri.TryCreate(href, UriKind.Absolute, out var url))
-                return page.Browser.NavigateToPageAsync(url, HttpVerb.Get, string.Empty);
+                return page.Browser.NavigateToPageAsync(url, HttpMethod.Get, string.Empty);
 
-            return page.Browser.NavigateToPageAsync(page.Browser.Referer.Combine(href), HttpVerb.Get, string.Empty);
+            return page.Browser.NavigateToPageAsync(page.Browser.Referer.Combine(href), HttpMethod.Get, string.Empty);
         }
     }
 }

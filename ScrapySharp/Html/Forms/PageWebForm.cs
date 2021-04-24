@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,7 @@ namespace ScrapySharp.Html.Forms
     {
         private readonly HtmlNode html;
         private readonly IScrapingBrowser browser;
-        private HttpVerb method;
+        private HttpMethod method;
         private string action;
 
         public PageWebForm(HtmlNode html, IScrapingBrowser browser)
@@ -45,9 +46,9 @@ namespace ScrapySharp.Html.Forms
             var value = nodeParser.GetAttributeValue("method");
 
             if (!string.IsNullOrEmpty(value) && value.Equals("get"))
-                method = HttpVerb.Get;
+                method = HttpMethod.Get;
             else
-                method = HttpVerb.Post;
+                method = HttpMethod.Post;
         }
 
         private void ParseAction<T>(IHtmlNodeParser<T> nodeParser)
@@ -137,7 +138,7 @@ namespace ScrapySharp.Html.Forms
             }
         }
 
-        public Task<WebPage> SubmitAsync(Uri url, HttpVerb verb, CancellationToken cancellationToken = default)
+        public Task<WebPage> SubmitAsync(Uri url, HttpMethod verb, CancellationToken cancellationToken = default)
         {
             return browser.NavigateToPageAsync(url, verb, SerializeFormFields(), cancellationToken:cancellationToken);
         }
@@ -155,7 +156,7 @@ namespace ScrapySharp.Html.Forms
             return browser.NavigateToPageAsync(browser.Referer.Combine(action), method, SerializeFormFields(), cancellationToken: cancellationToken);
         }
 
-        public async Task<WebPage> SubmitAsync(Uri url, HttpVerb verb)
+        public async Task<WebPage> SubmitAsync(Uri url, HttpMethod verb)
         {
             return await browser.NavigateToPageAsync(url, verb, SerializeFormFields());
         }
@@ -177,7 +178,7 @@ namespace ScrapySharp.Html.Forms
             return await browser.NavigateToPageAsync(url, method, SerializeFormFields());
         }
 
-        public HttpVerb Method
+        public HttpMethod Method
         {
             get { return method; }
             set { method = value; }

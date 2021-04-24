@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Cache;
+using System.Net.Http;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -25,7 +26,7 @@ namespace ScrapySharp.Network
         public ScrapingBrowser()
         {
             InitCookieContainer();
-            UserAgent = FakeUserAgents.Chrome24;
+            UserAgent = FakeUserAgents.ChromeForWindows;
             AllowAutoRedirect = true;
             Language = CultureInfo.CreateSpecificCulture("EN-US");
             UseDefaultCookiesParser = true;
@@ -55,7 +56,7 @@ namespace ScrapySharp.Network
         
         public WebResource DownloadWebResource(Uri url)
         {
-            var response = ExecuteRequest(url, HttpVerb.Get, new NameValueCollection());
+            var response = ExecuteRequest(url, HttpMethod.Get, new NameValueCollection());
             var memoryStream = new MemoryStream();
             var responseStream = response.GetResponseStream();
             responseStream?.CopyTo(memoryStream);
@@ -87,7 +88,7 @@ namespace ScrapySharp.Network
 
         public async Task<string> AjaxDownloadStringAsync(Uri url, CancellationToken cancellationToken = default)
         {
-            var request = CreateRequest(url, HttpVerb.Get);
+            var request = CreateRequest(url, HttpMethod.Get);
             request.Headers["X-Prototype-Version"] = "1.6.1";
             request.Headers["X-Requested-With"] = "XMLHttpRequest";
 
@@ -101,7 +102,7 @@ namespace ScrapySharp.Network
 
         public async Task<string> DownloadStringAsync(Uri url, CancellationToken cancellationToken = default)
         {
-            var request = CreateRequest(url, HttpVerb.Get);
+            var request = CreateRequest(url, HttpMethod.Get);
             return await GetResponseAsync(url, request, 0, new byte[0]);
         }
         
@@ -113,13 +114,13 @@ namespace ScrapySharp.Network
 
         public DecompressionMethods DecompressionMethods { get; set; }
 
-        private HttpWebRequest CreateRequest(Uri url, HttpVerb verb)
+        private HttpWebRequest CreateRequest(Uri url, HttpMethod verb)
         {
             var request = (HttpWebRequest)WebRequest.Create(url.AbsoluteUri);
             request.Referer = referer != null ? referer.AbsoluteUri : null;
-            request.Method = ToMethod(verb);
+            request.Method = verb.Method;
             request.CookieContainer = cookieContainer;
-            request.UserAgent = UserAgent.UserAgent;
+            request.UserAgent = UserAgent.Value;
             request.Proxy = Proxy;
             request.AutomaticDecompression = DecompressionMethods;
 
@@ -184,10 +185,10 @@ namespace ScrapySharp.Network
             if (responseStream == null)
                 return new WebPage(this, url, AutoDownloadPagesResources,
                     new RawRequest(request.Method, request.RequestUri, request.ProtocolVersion, headers, requestBody, Encoding),
-                    new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, response.Headers, new byte[0], Encoding), Encoding, AutoDetectCharsetEncoding);
+                    new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, Map(response.Headers), new byte[0], Encoding), Encoding, AutoDetectCharsetEncoding);
 
             var body = new MemoryStream();
-            responseStream.CopyTo(body);
+            await responseStream.CopyToAsync(body).ConfigureAwait(false);
             responseStream.Close();
             body.Position = 0;
             var content = Encoding.GetString(body.ToArray());
@@ -195,7 +196,7 @@ namespace ScrapySharp.Network
 
             var rawRequest = new RawRequest(request.Method, request.RequestUri, request.ProtocolVersion, headers, requestBody, Encoding);
             var webPage = new WebPage(this, url, AutoDownloadPagesResources, rawRequest,
-                new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, response.Headers, body.ToArray(), Encoding), Encoding, AutoDetectCharsetEncoding);
+                new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, Map(response.Headers), body.ToArray(), Encoding), Encoding, AutoDetectCharsetEncoding);
 
             if (AllowMetaRedirect && !string.IsNullOrEmpty(response.ContentType) && response.ContentType.Contains("html") && iteration < 10)
             {
@@ -219,13 +220,12 @@ namespace ScrapySharp.Network
 
                     var redirect = Unquote(match.Groups["url"].Value);
 
-                    Uri redirectUrl;
-                    if (!Uri.TryCreate(redirect, UriKind.RelativeOrAbsolute, out redirectUrl))
+                    if (!Uri.TryCreate(redirect, UriKind.RelativeOrAbsolute, out var redirectUrl))
                         return webPage;
 
                     if (!redirectUrl.IsAbsoluteUri)
                     {
-                        var baseUrl = string.Format("{0}://{1}", url.Scheme, url.Host);
+                        var baseUrl = $"{url.Scheme}://{url.Host}";
                         if (!url.IsDefaultPort)
                             baseUrl += ":" + url.Port;
 
@@ -238,13 +238,26 @@ namespace ScrapySharp.Network
                         }
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(seconds));
+                    await Task.Delay(TimeSpan.FromSeconds(seconds)).ConfigureAwait(false);
 
-                    return await DownloadRedirect(redirectUrl, iteration + 1);
+                    return await DownloadRedirect(redirectUrl, iteration + 1).ConfigureAwait(false);
                 }
             }
 
             return webPage;
+        }
+
+        private Header[] Map(WebHeaderCollection responseHeaders)
+        {
+            IEnumerable<Header> Iterate()
+            {
+                foreach (var key in responseHeaders.AllKeys)
+                {
+                    yield return new Header(key, responseHeaders[key]);
+                }
+            }
+
+            return Iterate().ToArray();
         }
 
         private string Unquote(string value)
@@ -262,7 +275,7 @@ namespace ScrapySharp.Network
 
         private async Task<WebPage> DownloadRedirect(Uri url, int iteration)
         {
-            var request = CreateRequest(url, HttpVerb.Get);
+            var request = CreateRequest(url, HttpMethod.Get);
             return await GetResponseAsync(url, request, iteration, new byte[0]);
         }
 
@@ -289,9 +302,7 @@ namespace ScrapySharp.Network
                 var cookiesExpression = headers["Set-Cookie"];
                 if (!string.IsNullOrEmpty(cookiesExpression))
                 {
-                    var cookieUrl =
-                        new Uri(string.Format("{0}://{1}:{2}/", response.ResponseUri.Scheme, response.ResponseUri.Host,
-                                              response.ResponseUri.Port));
+                    var cookieUrl = new Uri($"{response.ResponseUri.Scheme}://{response.ResponseUri.Host}:{response.ResponseUri.Port}/");
                     if (UseDefaultCookiesParser)
                         cookieContainer.SetCookies(cookieUrl, cookiesExpression);
                     else
@@ -319,128 +330,108 @@ namespace ScrapySharp.Network
             }
         }
 
-        public Task<string> NavigateToAsync(Uri url, HttpVerb verb, string data, CancellationToken cancellationToken = default)
+        public Task<string> NavigateToAsync(Uri url, HttpMethod verb, string data, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(NavigateTo(url, verb, data));
         }
 
-        public Task<string> NavigateToAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default)
+        public Task<string> NavigateToAsync(Uri url, HttpMethod verb, NameValueCollection data, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(NavigateTo(url, verb, data));
         }
 
-        public WebResponse ExecuteRequest(Uri url, HttpVerb verb, NameValueCollection data)
+        public WebResponse ExecuteRequest(Uri url, HttpMethod verb, NameValueCollection data)
         {
             return ExecuteRequest(url, verb, data.ToHttpVars());
         }
-        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpVerb verb, NameValueCollection data)
+        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpMethod verb, NameValueCollection data)
         {
             return await ExecuteRequestAsync(url, verb, data.ToHttpVars());
         }
 
-        public WebResponse ExecuteRequest(Uri url, HttpVerb verb, string data)
+        public WebResponse ExecuteRequest(Uri url, HttpMethod verb, string data)
         {
             return ExecuteRequestAsync(url, verb, data).Result;
         }
 
-        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpVerb verb, string data, string contentType = null, CancellationToken cancellationToken = default)
+        public async Task<WebResponse> ExecuteRequestAsync(Uri url, HttpMethod verb, string data, string contentType = null, CancellationToken cancellationToken = default)
         {
             var path = string.IsNullOrEmpty(data)
                               ? url.AbsoluteUri
-                              : (verb == HttpVerb.Get ? string.Format("{0}?{1}", url.AbsoluteUri, data) : url.AbsoluteUri);
+                              : (verb == HttpMethod.Get ? string.Format("{0}?{1}", url.AbsoluteUri, data) : url.AbsoluteUri);
 
             var request = CreateRequest(new Uri(path), verb);
 
-            if (verb == HttpVerb.Post)
+            if (verb == HttpMethod.Post)
                 request.ContentType = contentType ?? "application/x-www-form-urlencoded";
 
             request.CookieContainer = cookieContainer;
 
-            if (verb == HttpVerb.Post)
+            if (verb == HttpMethod.Post)
             {
                 var stream = await request.GetRequestStreamAsync();
                 using (var writer = new StreamWriter(stream))
                 {
-                    writer.Write(data);
-                    writer.Flush();
+                    await writer.WriteAsync(data).ConfigureAwait(false);
+                    await writer.FlushAsync().ConfigureAwait(false);
                 }
             }
 
             return await GetWebResponseAsync(url, request);
         }
 
-        public string NavigateTo(Uri url, HttpVerb verb, string data) => NavigateToPage(url, verb, data);
+        public string NavigateTo(Uri url, HttpMethod verb, string data) => NavigateToPage(url, verb, data);
 
-        public WebPage NavigateToPage(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null)
+        public WebPage NavigateToPage(Uri url, HttpMethod verb = null, string data = "", string contentType = null)
         {
             return NavigateToPageAsync(url, verb, data, contentType).Result;
         }
 
-        public async Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null, CancellationToken cancellationToken = default)
+        public async Task<WebPage> NavigateToPageAsync(Uri url, HttpMethod verb = null, string data = "", string contentType = null, CancellationToken cancellationToken = default)
         {
+            if (verb == null)
+                verb = HttpMethod.Get;
+            
             var path = string.IsNullOrEmpty(data)
                               ? url.AbsoluteUri
-                              : (verb == HttpVerb.Get ? string.Format("{0}?{1}", url.AbsoluteUri, data) : url.AbsoluteUri);
+                              : (verb == HttpMethod.Get ? string.Format("{0}?{1}", url.AbsoluteUri, data) : url.AbsoluteUri);
 
             var request = CreateRequest(new Uri(path), verb);
 
-            if (verb == HttpVerb.Post)
+            if (verb == HttpMethod.Post)
                 request.ContentType = contentType ?? "application/x-www-form-urlencoded";
 
             request.CookieContainer = cookieContainer;
 
-            if (verb == HttpVerb.Post)
+            if (verb == HttpMethod.Post)
             {
                 var stream = await request.GetRequestStreamAsync().ConfigureAwait(false);
-                using (var writer = new StreamWriter(stream))
-                {
-                    writer.Write(data);
-                    writer.Flush();
-                }
+                await using var writer = new StreamWriter(stream);
+                await writer.WriteAsync(data).ConfigureAwait(false);
+                await writer.FlushAsync().ConfigureAwait(false);
             }
 
-            return await GetResponseAsync(url, request, 0, Encoding.GetBytes(data)).ConfigureAwait(false);
+            var bytes = string.IsNullOrEmpty(data) ? Array.Empty<byte>() : Encoding.GetBytes(data);
+            
+            return await GetResponseAsync(url, request, 0, bytes).ConfigureAwait(false);
         }
 
-        public Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default)
+        public Task<WebPage> NavigateToPageAsync(Uri url, HttpMethod verb, NameValueCollection data, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(NavigateToPage(url, verb, data.ToHttpVars()));
         }
 
-        public WebPage NavigateToPage(Uri url, HttpVerb verb, NameValueCollection data)
+        public WebPage NavigateToPage(Uri url, HttpMethod verb, NameValueCollection data)
         {
             return NavigateToPage(url, verb, data.ToHttpVars());
         }
 
-        public string NavigateTo(Uri url, HttpVerb verb, NameValueCollection data)
+        public string NavigateTo(Uri url, HttpMethod verb, NameValueCollection data)
         {
             return NavigateTo(url, verb, data.ToHttpVars());
         }
 
-        private static string ToMethod(HttpVerb verb)
-        {
-			switch (verb)
-            {
-                case HttpVerb.Get:
-                    return "GET";
-				case HttpVerb.Head:
-					return "HEAD";
-				case HttpVerb.Post:
-                    return "POST";
-				case HttpVerb.Put:
-					return "PUT";
-				case HttpVerb.Delete:
-					return "DELETE";
-				case HttpVerb.Trace:
-					return "TRACE";
-				case HttpVerb.Options:
-					return "OPTIONS";
-				default:
-                    throw new ArgumentOutOfRangeException("verb");
-            }
-        }
-
-        public FakeUserAgent UserAgent { get; set; }
+        public UserAgent UserAgent { get; set; }
 
         public bool AllowAutoRedirect { get; set; }
 
@@ -471,6 +462,11 @@ namespace ScrapySharp.Network
         public CookieCollection GetCookieCollection(Uri url)
         {
             return cookieContainer.GetCookies(url);
+        }
+
+        public void Dispose()
+        {
+            
         }
     }
 }

@@ -20,11 +20,11 @@
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>hg</RepositoryType>
     <RepositoryUrl>https://github.com/rflechner/ScrapySharp.git</RepositoryUrl>
-    <LangVersion>8</LangVersion>
+    <LangVersion>9</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.22" />
-    <PackageReference Include="FSharp.Core" Version="4.7.0" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
+    <PackageReference Include="FSharp.Core" Version="5.0.1" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
   </ItemGroup>
   <ItemGroup>

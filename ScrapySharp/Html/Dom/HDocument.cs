@@ -6,6 +6,7 @@ using ScrapySharp.Html.Parsing;
 
 namespace ScrapySharp.Html.Dom
 {
+    [Obsolete("Please use HTMLAgilityPack instead")]
     public class HDocument : HContainer
     {
         public HDocument(params HElement[] children)

@@ -150,12 +150,12 @@ namespace ScrapySharp.Tests
         public void When_using_multiple_selector()
         {
             var doc = new HtmlDocument();
-            doc.LoadHtml(@"<html><body><hr /><hr id='beep'/><hr id='boop'/></body></html>");
+            doc.LoadHtml(@"<html><body><hr /><hr id='beep'/><hr id='boop'/> <div>div 1</div> <div class=""endive"">div 2</div> </body></html>");
             var node = doc.DocumentNode;
 
-            var result = node.CssSelect(new string[] { "#beep", "#boop" }).ToArray();
+            var result = node.CssSelect(new[] { "#beep", "#boop", "div", ".endive" }).ToArray();
 
-            Assert.AreEqual(2, result.Length);
+            Assert.AreEqual(4, result.Length);
         }
 
         [Test]

@@ -4,15 +4,15 @@
     <LangVersion>8</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.11.22" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.7.0" />
     <PackageReference Include="NUnit3TestAdapter" Version="3.10.0" />
     <PackageReference Include="System.Runtime.Caching" Version="4.7.0" />
     <PackageReference Include="NUnit" Version="3.10.*" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" />
-    <ProjectReference Include="..\ScrapySharp\ScrapySharp.csproj" />
+    <ProjectReference Include="..\..\ScrapySharp.Core\ScrapySharp.Core.fsproj" />
+    <ProjectReference Include="..\..\ScrapySharp\ScrapySharp.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Html\Form1.htm">

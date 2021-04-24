@@ -7,24 +7,24 @@ using System.Text;
 
 namespace ScrapySharp.Network
 {
-    public class RawResponse
+    public sealed class RawResponse
     {
-        internal RawResponse(Version httpVersion, HttpStatusCode statusCode, string statusDescription, NameValueCollection headers, byte[] body, Encoding encoding)
+        internal RawResponse(Version httpVersion, HttpStatusCode statusCode, string statusDescription, Header[] headers, byte[] body, Encoding encoding)
         {
             Encoding = encoding;
             HttpVersion = httpVersion;
             StatusCode = (int)statusCode;
             StatusDescription = statusDescription;
             Body = body;
-            Headers = headers.AllKeys.Select(k => new KeyValuePair<string, string>(k, headers[k])).ToList();
+            Headers = headers;
         }
 
-        public Version HttpVersion { get; private set; }
-        public int StatusCode { get; private set; }
-        public string StatusDescription { get; private set; }
-        public List<KeyValuePair<string, string>> Headers { get; private set; }
-        public byte[] Body { get; private set; }
-        public Encoding Encoding { get; private set; }
+        public Version HttpVersion { get; }
+        public int StatusCode { get; }
+        public string StatusDescription { get; }
+        public Header[] Headers { get; }
+        public byte[] Body { get; }
+        public Encoding Encoding { get; }
 
         public override string ToString()
         {
@@ -32,7 +32,13 @@ namespace ScrapySharp.Network
             builder.AppendFormat("HTTP/{0}.{1} {2} {3}\r\n", HttpVersion.Major, HttpVersion.Minor, StatusCode, StatusDescription);
 
             foreach (var header in Headers)
-                builder.AppendFormat("{0}: {1}\r\n", header.Key, header.Value);
+            {
+                foreach (var value in header.Values)
+                {
+                    builder.AppendFormat("{0}: {1}\r\n", header.Name, value);
+                }
+            }
+            
             builder.AppendFormat("\r\n");
 
             if (Body != null && Body.Length > 0)

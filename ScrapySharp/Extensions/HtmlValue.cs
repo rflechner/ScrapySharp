@@ -26,7 +26,7 @@ namespace ScrapySharp.Extensions
 
         public static implicit operator HtmlValue(string value)
         {
-            return new HtmlValue(value);
+            return new(value);
         }
 
         public static explicit operator bool(HtmlValue htmlValue)
@@ -38,8 +38,7 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator bool?(HtmlValue htmlValue)
         {
-            bool result;
-            if (bool.TryParse(htmlValue.value, out result))
+            if (bool.TryParse(htmlValue.value, out var result))
                 return result;
             return null;
         }
@@ -52,8 +51,7 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator int?(HtmlValue htmlValue)
         {
-            int result;
-            if (int.TryParse(htmlValue.value, out result))
+            if (int.TryParse(htmlValue.value, out var result))
                 return result;
             return null;
         }
@@ -67,10 +65,12 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator uint?(HtmlValue htmlValue)
         {
-            uint result;
-            if (uint.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite 
-                    | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, 
-                    NumberFormatInfo.InvariantInfo, out result))
+            var styles = NumberStyles.AllowLeadingWhite 
+                         | NumberStyles.AllowTrailingWhite 
+                         | NumberStyles.AllowLeadingSign
+                         | NumberStyles.AllowDecimalPoint
+                         | NumberStyles.AllowExponent;
+            if (uint.TryParse(htmlValue.value, styles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
@@ -98,9 +98,9 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator ulong?(HtmlValue htmlValue)
         {
-            ulong result;
             if (ulong.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
+                                                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
+                out var result))
                 return result;
             return null;
         }
@@ -113,9 +113,9 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator float?(HtmlValue htmlValue)
         {
-            float result;
             if (float.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
+                                                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
+                out var result))
                 return result;
             return null;
         }
@@ -128,31 +128,25 @@ namespace ScrapySharp.Extensions
 
         public static explicit operator double?(HtmlValue htmlValue)
         {
-            double result;
             if (double.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
+                                                 | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
+                out var result))
                 return result;
             return null;
         }
 
-        public static explicit operator decimal(HtmlValue htmlValue)
-        {
-            return Convert.ToDecimal(htmlValue.value);
-        }
+        public static explicit operator decimal(HtmlValue htmlValue) => Convert.ToDecimal(htmlValue.value);
 
         public static explicit operator decimal?(HtmlValue htmlValue)
         {
-            decimal result;
-            if (decimal.TryParse(htmlValue.value, out result))
+            if (decimal.TryParse(htmlValue.value, out var result))
                 return result;
             return null;
         }
 
         public static explicit operator DateTime(HtmlValue htmlValue)
         {
-            if (htmlValue == null)
-                return DateTime.MinValue;
-            return htmlValue.value.ToDate();
+            return htmlValue == null ? DateTime.MinValue : htmlValue.value.ToDate();
         }
 
         public static explicit operator DateTime?(HtmlValue htmlValue)
@@ -164,24 +158,19 @@ namespace ScrapySharp.Extensions
         
         public static explicit operator TimeSpan(HtmlValue htmlValue)
         {
-            if (htmlValue == null)
-                return TimeSpan.Zero;
-            return TimeSpan.Parse(htmlValue.value);
+            return htmlValue == null ? TimeSpan.Zero : TimeSpan.Parse(htmlValue.value);
         }
 
         public static explicit operator TimeSpan?(HtmlValue htmlValue)
         {
-            TimeSpan result;
-            if (TimeSpan.TryParse(htmlValue.value, out result))
+            if (TimeSpan.TryParse(htmlValue.value, out var result))
                 return result;
             return null;
         }
 
         public static explicit operator Guid(HtmlValue htmlValue)
         {
-            if (htmlValue == null)
-                return Guid.Empty;
-            return new Guid(htmlValue.value);
+            return htmlValue == null ? Guid.Empty : new Guid(htmlValue.value);
         }
 
         public static explicit operator Guid?(HtmlValue htmlValue)

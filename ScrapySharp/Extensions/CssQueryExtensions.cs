@@ -23,16 +23,20 @@ namespace ScrapySharp.Extensions
 
         public static IEnumerable<HtmlNode> CssSelect(this HtmlNode node, string[] expressions)
         {
-            List<HtmlNode> elements = new List<HtmlNode>();
+            // Use a HashSet to avoid duplicates.
+            var elements = new HashSet<HtmlNode>();
+            
             foreach (var expression in expressions)
             {
                 var matchingElements = node.CssSelect(expression).ToList();
 
-                // Use a union to remove duplicates.
-                elements = elements.Union(matchingElements).ToList();
+                foreach (var element in matchingElements)
+                {
+                    elements.Add(element);
+                }
             }
 
-            return elements.ToArray();
+            return elements;
         }
 
         public static IEnumerable<HtmlNode> CssSelectAncestors(this IEnumerable<HtmlNode> nodes, string expression)
@@ -45,8 +49,10 @@ namespace ScrapySharp.Extensions
         {
             var tokenizer = new CssSelectorTokenizer();
             var tokens = tokenizer.Tokenize(expression);
-            var executor = new CssSelectorExecutor<HtmlNode>(new List<HtmlNode> { node }, tokens.ToList(), new AgilityNavigationProvider());
-            executor.MatchAncestors = true;
+            var executor = new CssSelectorExecutor<HtmlNode>(new List<HtmlNode> {node}, tokens.ToList(), new AgilityNavigationProvider())
+            {
+                MatchAncestors = true
+            };
 
             return executor.GetElements();
         }

@@ -18,8 +18,6 @@ namespace ScrapySharp.Network
     {
         private readonly IScrapingBrowser browser;
         private readonly Uri absoluteUrl;
-        private readonly RawRequest rawRequest;
-        private readonly RawResponse rawResponse;
         private readonly bool autoDetectCharsetEncoding;
         private string content;
         private readonly List<WebResource> resources;
@@ -39,8 +37,8 @@ namespace ScrapySharp.Network
         {
             this.browser = browser;
             this.absoluteUrl = absoluteUrl;
-            this.rawRequest = rawRequest;
-            this.rawResponse = rawResponse;
+            this.RawRequest = rawRequest;
+            this.RawResponse = rawResponse;
             this.autoDetectCharsetEncoding = autoDetectCharsetEncoding;
             Encoding = encoding;
 
@@ -84,32 +82,25 @@ namespace ScrapySharp.Network
                     if (!string.IsNullOrEmpty(charset))
                     {
                         Encoding = Encoding.GetEncoding(charset);
-                        content = Encoding.GetString(rawResponse.Body);
+                        content = Encoding.GetString(RawResponse.Body);
                         html = content.ToHtmlNode();
                     }
                 }
             }
             catch
             {
-                
+                // ignored
             }
         }
 
-        public bool AutoDetectCharsetEncoding
-        {
-            get { return autoDetectCharsetEncoding; }
-        }
+        public bool AutoDetectCharsetEncoding => autoDetectCharsetEncoding;
 
-        public RawRequest RawRequest
-        {
-            get { return rawRequest; }
-        }
+        public RawRequest RawRequest { get; }
 
-        public RawResponse RawResponse
-        {
-            get { return rawResponse; }
-        }
+        public RawResponse RawResponse { get; }
 
+        public bool IsErrorPage => RawResponse.StatusCode < 200 || RawResponse.StatusCode >= 300;
+        
         public IEnumerable<HtmlNode> Find(string tag, By by)
         {
             return @by.CreateElementFinder(html, tag).FindElements();

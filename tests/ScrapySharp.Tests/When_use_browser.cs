@@ -3,6 +3,7 @@ using System.Collections.Specialized;
 using System.Globalization;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using NUnit.Framework;
 using ScrapySharp.Network;
@@ -19,7 +20,7 @@ namespace ScrapySharp.Tests
         {
             var browser = new ScrapingBrowser();
             //browser.Encoding = Encoding.UTF8;
-            WebPage page = browser.NavigateToPage(new Uri("https://bitbucket.org/repo/all"), HttpVerb.Post, new NameValueCollection
+            WebPage page = browser.NavigateToPage(new Uri("https://bitbucket.org/repo/all"), HttpMethod.Post, new NameValueCollection
                 {
                     {"name", "test"},
                 });

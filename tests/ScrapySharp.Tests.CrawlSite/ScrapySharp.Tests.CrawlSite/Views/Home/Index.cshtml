@@ -1,0 +1,23 @@
+﻿@model ScrapySharp.Tests.CrawlSite.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+      </ol>
+    </nav>
+
+    <ul id="categories">
+        @foreach (var category in Model.Categories)
+        {
+            <li>
+                @Html.ActionLink(category.Name, "Category", "Home", routeValues: new { id=category.Id })
+            </li>
+        }
+    </ul>
+
+</div>

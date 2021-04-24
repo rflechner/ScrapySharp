@@ -7,6 +7,7 @@ using ScrapySharp.Html.Dom;
 using ScrapySharp.Html.Forms;
 using ScrapySharp.Extensions;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using ScrapySharp.Network;
 
@@ -27,7 +28,7 @@ namespace ScrapySharp.Tests
 
             PageWebForm form = homePage.FindFormById("sb_form");
             form["q"] = "scrapysharp";
-            form.Method = HttpVerb.Get;
+            form.Method = HttpMethod.Get;
             WebPage resultsPage = await form.SubmitAsync();
 
             HtmlNode[] resultsLinks = resultsPage.Html.CssSelect("div.sb_tlst h3 a").ToArray();

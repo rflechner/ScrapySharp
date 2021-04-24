@@ -37,9 +37,8 @@ namespace ScrapySharp.Network
             return list;
         }
 
-        public List<Cookie> ParseCookies(string cookiesExpression)
+        public IEnumerable<Cookie> ParseCookies(string cookiesExpression)
         {
-            var cookies = new List<Cookie>();
             var keyValuePairs = ParseValuePairs(cookiesExpression);
 
             for (int i = 0; i < keyValuePairs.Count; i++)
@@ -74,14 +73,12 @@ namespace ScrapySharp.Network
                 }
 
                 if (string.IsNullOrEmpty(domain) && !string.IsNullOrEmpty(path))
-                    cookies.Add(new Cookie(name, value, path, defaultDomain));
+                    yield return new Cookie(name, value, path, defaultDomain);
                 else if (!string.IsNullOrEmpty(domain) && !string.IsNullOrEmpty(path))
-                    cookies.Add(new Cookie(name, value, path, domain));
+                    yield return new Cookie(name, value, path, domain);
                 else
-                    cookies.Add(new Cookie(name, value, "/", defaultDomain));
+                    yield return new Cookie(name, value, "/", defaultDomain);
             }
-
-            return cookies;
         }
     }
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Web;
 using HtmlAgilityPack;
@@ -11,13 +12,13 @@ namespace ScrapySharp.Html.Forms
 {
     public class WebForm
     {
-        private HttpVerb method;
+        private HttpMethod method;
         private string action;
 
         public WebForm()
         {
             FormFields = new List<FormField>();
-            method = HttpVerb.Post;
+            method = HttpMethod.Post;
             action = string.Empty;
         }
 
@@ -45,9 +46,9 @@ namespace ScrapySharp.Html.Forms
             var value = nodeParser.GetAttributeValue("method");
 
             if (!string.IsNullOrEmpty(value) && value.Equals("get"))
-                method = HttpVerb.Get;
+                method = HttpMethod.Get;
             else
-                method = HttpVerb.Post;
+                method = HttpMethod.Post;
         }
 
         private void ParseAction<T>(IHtmlNodeParser<T> nodeParser)
@@ -137,7 +138,7 @@ namespace ScrapySharp.Html.Forms
             }
         }
 
-        public void Submit(ScrapingBrowser browser, Uri url, HttpVerb verb)
+        public void Submit(ScrapingBrowser browser, Uri url, HttpMethod verb)
         {
             browser.NavigateTo(url, verb, SerializeFormFields());
         }
@@ -147,7 +148,7 @@ namespace ScrapySharp.Html.Forms
             browser.NavigateTo(url, method, SerializeFormFields());
         }
 
-        public HttpVerb Method
+        public HttpMethod Method
         {
             get { return method; }
             set { method = value; }

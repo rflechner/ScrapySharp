@@ -5,56 +5,35 @@ namespace ScrapySharp.Network
 {
     public class WebResource : IDisposable
     {
-        private readonly Stream content;
-        private readonly string lastModified;
-        private readonly Uri absoluteUrl;
-        private readonly bool forceDownload;
-        private readonly string contentType;
-
         public WebResource(Stream content, string lastModified, Uri absoluteUrl, bool forceDownload, string contentType)
         {
-            this.content = content;
-            this.lastModified = lastModified;
-            this.absoluteUrl = absoluteUrl;
-            this.forceDownload = forceDownload;
-            this.contentType = contentType;
+            Content = content;
+            LastModified = lastModified;
+            AbsoluteUrl = absoluteUrl;
+            ForceDownload = forceDownload;
+            ContentType = contentType;
         }
 
         public void Dispose()
         {
-            content.Dispose();
+            Content.Dispose();
         }
 
-        public Stream Content
-        {
-            get { return content; }
-        }
+        public Stream Content { get; }
 
-        public string LastModified
-        {
-            get { return lastModified; }
-        }
+        public string LastModified { get; }
 
-        public Uri AbsoluteUrl
-        {
-            get { return absoluteUrl; }
-        }
+        public Uri AbsoluteUrl { get; }
 
-        public bool ForceDownload
-        {
-            get { return forceDownload; }
-        }
+        public bool ForceDownload { get; }
 
-        public string ContentType
-        {
-            get { return contentType; }
-        }
+        public string ContentType { get; }
 
         public string GetTextContent()
         {
-            content.Position = 0;
-            using (var reader = new StreamReader(content))
-                return reader.ReadToEnd();
+            Content.Position = 0;
+            using var reader = new StreamReader(Content);
+            return reader.ReadToEnd();
         }
     }
 }

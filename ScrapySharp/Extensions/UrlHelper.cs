@@ -5,7 +5,7 @@ namespace ScrapySharp.Extensions
 {
     public static class UrlHelper
     {
-        private static readonly Regex basePathRegex = new Regex("(?<scheme>(http[s]?[:]//)?)(?<site>[^/]+).*", RegexOptions.Compiled);
+        private static readonly Regex BasePathRegex = new ("(?<scheme>(http[s]?[:]//)?)(?<site>[^/]+).*", RegexOptions.Compiled);
 
         public static Uri Combine(this Uri uri, string path)
         {
@@ -20,7 +20,7 @@ namespace ScrapySharp.Extensions
 
             if (path.StartsWith("/"))
             {
-                var match = basePathRegex.Match(url);
+                var match = BasePathRegex.Match(url);
                 if (match.Success)
                 {
                     var scheme = match.Groups["scheme"].Value;

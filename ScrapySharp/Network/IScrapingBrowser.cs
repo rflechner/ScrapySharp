@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Specialized;
 using System.Net;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace ScrapySharp.Network
 {
-    public interface IScrapingBrowser
+    public interface IScrapingBrowser : IDisposable
     {
         Task<WebResource> DownloadWebResourceAsync(Uri url, CancellationToken cancellationToken = default);
         
@@ -18,19 +19,15 @@ namespace ScrapySharp.Network
         
         bool AutoDownloadPagesResources { get; set; }
         
-        FakeUserAgent UserAgent { get; set; }
+        UserAgent UserAgent { get; set; }
         
         Uri Referer { get; set; }
         
         void SetCookies(Uri cookieUrl, string cookiesExpression);
         
-        Task<string> NavigateToAsync(Uri url, HttpVerb verb, string data, CancellationToken cancellationToken = default);
-
-        Task<string> NavigateToAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default);
-
-        Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb = HttpVerb.Get, string data = "", string contentType = null, CancellationToken cancellationToken = default);
+        Task<WebPage> NavigateToPageAsync(Uri url, HttpMethod verb = null, string data = "", string contentType = null, CancellationToken cancellationToken = default);
         
-        Task<WebPage> NavigateToPageAsync(Uri url, HttpVerb verb, NameValueCollection data, CancellationToken cancellationToken = default);
+        Task<WebPage> NavigateToPageAsync(Uri url, HttpMethod verb, NameValueCollection data, CancellationToken cancellationToken = default);
         
         Cookie GetCookie(Uri url, string name);
         
