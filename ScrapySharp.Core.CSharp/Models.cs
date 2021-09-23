@@ -1,8 +1,7 @@
 ﻿using Microsoft.FSharp.Core;
-using ScrapySharp.Core.CSharp;
 using System.Collections;
 
-namespace ScrapySharp.Core
+namespace ScrapySharp.Core.CSharp
 {
     internal static class Models
     {

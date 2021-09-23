@@ -1,9 +1,7 @@
 ﻿using Microsoft.FSharp.Collections;
 using Microsoft.FSharp.Core;
-using ScrapySharp.Core;
-using ScrapySharp.Core.CSharp;
 using System;
-namespace StartupCode.ScrapySharp.Core.CSharp
+namespace ScrapySharp.Core.CSharp
 {
     internal class CssSelectorTokenizerN
     {
