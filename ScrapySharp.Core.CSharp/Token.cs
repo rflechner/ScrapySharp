@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Diagnostics;
 
-namespace ScrapySharp.Core
+namespace ScrapySharp.Core.CSharp
 {
     public abstract class Token : IEquatable<Token>, IStructuralEquatable, IComparable<Token>, IComparable, IStructuralComparable
     {
