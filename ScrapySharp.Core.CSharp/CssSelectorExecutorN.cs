@@ -1,6 +1,5 @@
 ﻿using Microsoft.FSharp.Collections;
 using System.Collections.Generic;
-using System;
 
 namespace ScrapySharp.Core.CSharp
 {

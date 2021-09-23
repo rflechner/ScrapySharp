@@ -1,7 +1,4 @@
 ﻿using Microsoft.FSharp.Collections;
-using Microsoft.FSharp.Core;
-using StartupCode.ScrapySharp.Core.CSharp;
-using System;
 
 namespace ScrapySharp.Core.CSharp
 {
