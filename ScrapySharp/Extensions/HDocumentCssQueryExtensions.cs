@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
-using ScrapySharp.Core;
+using ScrapySharp.Core.CSharp;
 using ScrapySharp.Html.Dom;
 
 namespace ScrapySharp.Extensions

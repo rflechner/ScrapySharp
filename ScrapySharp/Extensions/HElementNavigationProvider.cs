@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
-using ScrapySharp.Core;
+using ScrapySharp.Core.CSharp;
 using ScrapySharp.Html.Dom;
 
 namespace ScrapySharp.Extensions

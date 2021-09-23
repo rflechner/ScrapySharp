@@ -27,7 +27,7 @@
     <PackageReference Include="System.Runtime.Caching" Version="4.5.0-preview1-26216-02" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ScrapySharp.Core.CSharp\ScrapySharp.Core.CSharp.csproj" />
   </ItemGroup>
   <Target Name="IncludeP2PAssets">
     <ItemGroup>
