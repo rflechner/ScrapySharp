@@ -12,19 +12,19 @@ namespace ScrapySharp.Core.CSharp
         }
         List<HtmlNode> INavigationProvider<HtmlNode>.ChildNodes(List<HtmlNode> nodes)
         {
-            return new List<HtmlNode>(SeqModule.Collect<HtmlNodeCollection, HtmlNodeCollection, HtmlNode>(NavigationProvider.ChildNodes23._instance, SeqModule.Map<HtmlNode, HtmlNodeCollection>(NavigationProvider.ChildNodes231._instance, nodes)));
+            return new List<HtmlNode>(SeqModule.Collect<HtmlNodeCollection, HtmlNodeCollection, HtmlNode>(NavigationProvider.ChildNodes23._instance, SeqModule.Map(NavigationProvider.ChildNodes231._instance, nodes)));
         }
         List<HtmlNode> INavigationProvider<HtmlNode>.Descendants(List<HtmlNode> nodes)
         {
-            return new List<HtmlNode>(SeqModule.Collect<IEnumerable<HtmlNode>, IEnumerable<HtmlNode>, HtmlNode>(NavigationProvider.Descendants26._instance, SeqModule.Map<HtmlNode, IEnumerable<HtmlNode>>(NavigationProvider.Descendants261._instance, nodes)));
+            return new List<HtmlNode>(SeqModule.Collect<IEnumerable<HtmlNode>, IEnumerable<HtmlNode>, HtmlNode>(NavigationProvider.Descendants26._instance, SeqModule.Map(NavigationProvider.Descendants261._instance, nodes)));
         }
         List<HtmlNode> INavigationProvider<HtmlNode>.ParentNodes(List<HtmlNode> nodes)
         {
-            return new List<HtmlNode>(SeqModule.Map<HtmlNode, HtmlNode>(NavigationProvider.ParentNodes29._instance, nodes));
+            return new List<HtmlNode>(SeqModule.Map(NavigationProvider.ParentNodes29._instance, nodes));
         }
         List<HtmlNode> INavigationProvider<HtmlNode>.AncestorsAndSelf(List<HtmlNode> nodes)
         {
-            return new List<HtmlNode>(SeqModule.Collect<IEnumerable<HtmlNode>, IEnumerable<HtmlNode>, HtmlNode>(NavigationProvider.AncestorsAndSelf32._instance, SeqModule.Map<HtmlNode, IEnumerable<HtmlNode>>(NavigationProvider.AncestorsAndSelf321._instance, nodes)));
+            return new List<HtmlNode>(SeqModule.Collect<IEnumerable<HtmlNode>, IEnumerable<HtmlNode>, HtmlNode>(NavigationProvider.AncestorsAndSelf32._instance, SeqModule.Map(NavigationProvider.AncestorsAndSelf321._instance, nodes)));
         }
         string INavigationProvider<HtmlNode>.GetName(HtmlNode node)
         {
@@ -40,7 +40,7 @@ namespace ScrapySharp.Core.CSharp
         }
         NameValueCollection INavigationProvider<HtmlNode>.Attributes(HtmlNode nodes)
         {
-            NameValueCollection attrs = new NameValueCollection();
+            NameValueCollection attrs = new();
             HtmlAttributeCollection attributes = nodes.Attributes;
             foreach (HtmlAttribute attr in attributes)
             {
