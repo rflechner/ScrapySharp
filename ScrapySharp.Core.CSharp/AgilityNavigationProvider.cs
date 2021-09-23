@@ -2,7 +2,6 @@
 using Microsoft.FSharp.Collections;
 using System.Collections.Generic;
 using System.Collections.Specialized;
-
 namespace ScrapySharp.Core.CSharp
 {
     public class AgilityNavigationProvider : INavigationProvider<HtmlNode>

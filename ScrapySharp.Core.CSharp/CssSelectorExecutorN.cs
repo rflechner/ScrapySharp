@@ -1,6 +1,5 @@
 ﻿using Microsoft.FSharp.Collections;
 using System.Collections.Generic;
-
 namespace ScrapySharp.Core.CSharp
 {
     public class CssSelectorExecutor<n>
@@ -13,11 +12,9 @@ namespace ScrapySharp.Core.CSharp
             this.level = FilterLevel.Descendants;
             this.matchAncestors = false;
         }
-
         public CssSelectorExecutor()
         {
         }
-
         public bool MatchAncestors
         {
             get

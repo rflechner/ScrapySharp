@@ -1,5 +1,4 @@
 ﻿using Microsoft.FSharp.Collections;
-
 namespace ScrapySharp.Core.CSharp
 {
     public class CssSelectorTokenizer

@@ -3,14 +3,12 @@ using Microsoft.FSharp.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 namespace ScrapySharp.Core.CSharp
 {
     internal static class CssSelectorExecutor
     {
         internal static FSharpList<n> getTargets39<n>(CssSelectorExecutor<n> x, FSharpList<n> acc)
         {
-
             FilterLevel level = x.level;
             FilterLevel obj = FilterLevel.Children;
             if (level.Equals(obj, LanguagePrimitives.GenericEqualityComparer))
@@ -37,7 +35,6 @@ namespace ScrapySharp.Core.CSharp
             }
             return acc;
         }
-
         internal static FSharpList<n> selectElements51<n>(CssSelectorExecutor<n> x, char[] whiteSpaces, FSharpList<n> acc, FSharpList<Token> source)
         {
             while (source.TailOrNull != null)
@@ -810,7 +807,6 @@ namespace ScrapySharp.Core.CSharp
                 return s.Equals(this.value, StringComparison.InvariantCultureIgnoreCase);
             }
             public string value = _value;
-
             private static string _value;
         }
         internal sealed class selectedNodes1108<n> : FSharpFunc<n, bool>

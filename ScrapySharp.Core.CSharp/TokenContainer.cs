@@ -1,13 +1,11 @@
 ﻿using System;
 using Microsoft.FSharp.Core;
-
 namespace ScrapySharp.Core.CSharp
 {
 	public class TokenContainer
 	{
 		public TokenContainer()
         {
-
         }
 		public TokenContainer(Token token, int offset) : this()
 		{

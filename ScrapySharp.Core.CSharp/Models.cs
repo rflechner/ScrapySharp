@@ -1,11 +1,9 @@
 ﻿using Microsoft.FSharp.Core;
 using System.Collections;
-
 namespace ScrapySharp.Core.CSharp
 {
     internal static class Models
     {
-
         internal static int CompareTocont9(Token @this, Token obj, Unit unitVar)
         {
             switch (@this.Tag)
@@ -354,10 +352,7 @@ namespace ScrapySharp.Core.CSharp
                     }
             }
         }
-
-
         internal static int CompareTocont91(Token @this, Token objTemp, Unit unitVar)
-
         {
             switch (@this.Tag)
             {
@@ -676,10 +671,7 @@ namespace ScrapySharp.Core.CSharp
                     }
             }
         }
-
-
         internal static int GetHashCodecont9(Token @this, Unit unitVar)
-
         {
             switch (@this.Tag)
             {
@@ -844,10 +836,7 @@ namespace ScrapySharp.Core.CSharp
                     }
             }
         }
-
-
         internal static bool Equalscont9(Token @this, Token that, Unit unitVar)
-
         {
             switch (@this.Tag)
             {
@@ -997,10 +986,7 @@ namespace ScrapySharp.Core.CSharp
                     }
             }
         }
-
-
         internal static bool Equalscont91(Token @this, Token obj, Unit unitVar)
-
         {
             switch (@this.Tag)
             {
