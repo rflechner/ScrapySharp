@@ -2,7 +2,7 @@
 using System;
 using System.Collections;
 
-namespace ScrapySharp.Core
+namespace ScrapySharp.Core.CSharp
 {
     public sealed class FilterLevel : IEquatable<FilterLevel>, IStructuralEquatable, IComparable<FilterLevel>, IComparable, IStructuralComparable
     {
