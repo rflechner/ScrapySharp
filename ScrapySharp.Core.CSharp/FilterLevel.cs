@@ -6,6 +6,21 @@ namespace ScrapySharp.Core.CSharp
     public sealed class FilterLevel : IEquatable<FilterLevel>, IStructuralEquatable, IComparable<FilterLevel>, IComparable, IStructuralComparable
     {
         internal FilterLevel level;
+        public int Tag { get; }
+        public int _tag { get; private set; }
+        public static FilterLevel _unique_Root { get; set; }
+        public static FilterLevel _unique_Children { get; set; }
+        public static FilterLevel _unique_Descendants { get { return FilterLevel._unique_Descendants; }}
+        public static FilterLevel _unique_Parents { get; set; }
+        public static FilterLevel _unique_Ancestors { get; set; }
+        public static class Tags
+        {
+            public const int Root = 0;
+            public const int Children = 1;
+            public const int Descendants = 2;
+            public const int Parents = 3;
+            public const int Ancestors = 4;
+        }
         internal FilterLevel(int _tag)
         {
             this.Tag = _tag;
@@ -80,7 +95,7 @@ namespace ScrapySharp.Core.CSharp
                 return this.Tag == 4;
             }
         }
-        public int Tag { get; }
+
         internal object __DebugDisplay()
         {
             return ExtraTopLevelOperators.PrintFormatToString<FSharpFunc<FilterLevel, string>>(new PrintfFormat<FSharpFunc<FilterLevel, string>, Unit, string, string, string>("%+0.8A")).Invoke(this);
@@ -189,20 +204,6 @@ namespace ScrapySharp.Core.CSharp
         {
             FilterLevel filterLevel = obj as FilterLevel;
             return filterLevel != null && this.Equals(filterLevel);
-        }
-        internal readonly int _tag;
-        internal static readonly FilterLevel _unique_Root;
-        internal static readonly FilterLevel _unique_Children;
-        internal static readonly FilterLevel _unique_Descendants;
-        internal static readonly FilterLevel _unique_Parents;
-        internal static readonly FilterLevel _unique_Ancestors;
-        public static class Tags
-        {
-            public const int Root = 0;
-            public const int Children = 1;
-            public const int Descendants = 2;
-            public const int Parents = 3;
-            public const int Ancestors = 4;
         }
     }
 }
