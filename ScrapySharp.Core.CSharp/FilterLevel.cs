@@ -10,7 +10,7 @@ namespace ScrapySharp.Core.CSharp
         public int _tag { get; private set; }
         public static FilterLevel _unique_Root { get; set; }
         public static FilterLevel _unique_Children { get; set; }
-        public static FilterLevel _unique_Descendants { get { return FilterLevel._unique_Descendants; }}
+        public static FilterLevel _unique_Descendants { get; set; }
         public static FilterLevel _unique_Parents { get; set; }
         public static FilterLevel _unique_Ancestors { get; set; }
         public static class Tags
