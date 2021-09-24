@@ -5,104 +5,95 @@ namespace ScrapySharp.Core.CSharp
 {
     public sealed class FilterLevel : IEquatable<FilterLevel>, IStructuralEquatable, IComparable<FilterLevel>, IComparable, IStructuralComparable
     {
-        internal FilterLevel level;
         public int Tag;
-        public int _tag;
-        public static FilterLevel _unique_Root;
-        public static FilterLevel _unique_Children;
-        public static FilterLevel _unique_Descendants;
-        public static FilterLevel _unique_Parents;
-        public static FilterLevel _unique_Ancestors;
-        public static class Tags
-        {
-            public const int Root = 0;
-            public const int Children = 1;
-            public const int Descendants = 2;
-            public const int Parents = 3;
-            public const int Ancestors = 4;
-        }
+        internal readonly int _tag;
+        internal static readonly FilterLevel _unique_Root;
+        internal static readonly FilterLevel _unique_Children;
+        internal static readonly FilterLevel _unique_Descendants;
+        internal static readonly FilterLevel _unique_Parents;
+        internal static readonly FilterLevel _unique_Ancestors;
         internal FilterLevel(int _tag)
         {
-            this.Tag = _tag;
+            Tag = _tag;
         }
         public static FilterLevel Root
         {
             get
             {
-                return FilterLevel._unique_Root;
+                return _unique_Root;
             }
         }
         public bool IsRoot
         {
             get
             {
-                return this.Tag == Tags.Root;
+                return Tag == 0;
             }
         }
         public static FilterLevel Children
         {
             get
             {
-                return FilterLevel._unique_Children;
+                return _unique_Children;
             }
         }
         public bool IsChildren
         {
             get
             {
-                return this.Tag == Tags.Children;
+                return Tag == 1;
             }
         }
         public static FilterLevel Descendants
         {
             get
             {
-                return FilterLevel._unique_Descendants;
+                return _unique_Descendants;
             }
         }
         public bool IsDescendants
         {
             get
             {
-                return this.Tag == Tags.Descendants;
+                return Tag == 2;
             }
         }
         public static FilterLevel Parents
         {
             get
             {
-                return FilterLevel._unique_Parents;
+                return _unique_Parents;
             }
         }
         public bool IsParents
         {
             get
             {
-                return this.Tag == Tags.Parents;
+                return Tag == 3;
             }
         }
         public static FilterLevel Ancestors
         {
             get
             {
-                return FilterLevel._unique_Ancestors;
+                return _unique_Ancestors;
             }
         }
         public bool IsAncestors
         {
             get
             {
-                return this.Tag == Tags.Ancestors;
+                return Tag == 4;
             }
         }
 
         internal object __DebugDisplay()
         {
-            return ExtraTopLevelOperators.PrintFormatToString<FSharpFunc<FilterLevel, string>>(new PrintfFormat<FSharpFunc<FilterLevel, string>, Unit, string, string, string>("%+0.8A")).Invoke(this);
+            return ExtraTopLevelOperators.PrintFormatToString(new PrintfFormat<FSharpFunc<FilterLevel, string>, Unit, string, string, string>("%+0.8A")).Invoke(this);
         }
         public override string ToString()
         {
-            return ExtraTopLevelOperators.PrintFormatToString<FSharpFunc<FilterLevel, string>>(new PrintfFormat<FSharpFunc<FilterLevel, string>, Unit, string, string, FilterLevel>("%+A")).Invoke(this);
+            return ExtraTopLevelOperators.PrintFormatToString(new PrintfFormat<FSharpFunc<FilterLevel, string>, Unit, string, string, FilterLevel>("%+A")).Invoke(this);
         }
         public int CompareTo(FilterLevel obj)
         {
