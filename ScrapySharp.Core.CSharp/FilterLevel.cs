@@ -22,6 +22,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return _unique_Root;
             }
+            set
+            {
+                Root = new FilterLevel(0);
+            }
         }
         public bool IsRoot
         {
@@ -35,6 +39,10 @@ namespace ScrapySharp.Core.CSharp
             get
             {
                 return _unique_Children;
+            }
+            set
+            {
+                Children = new FilterLevel(1);
             }
         }
         public bool IsChildren
@@ -50,6 +58,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return _unique_Descendants;
             }
+            set
+            {
+                Descendants = new FilterLevel(2);
+            }
         }
         public bool IsDescendants
         {
@@ -64,6 +76,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return _unique_Parents;
             }
+            set
+            {
+                Parents = new FilterLevel(3);
+            }
         }
         public bool IsParents
         {
@@ -77,6 +93,10 @@ namespace ScrapySharp.Core.CSharp
             get
             {
                 return _unique_Ancestors;
+            }
+            set
+            {
+                Ancestors = new FilterLevel(4);
             }
         }
         public bool IsAncestors
