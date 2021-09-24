@@ -7,13 +7,21 @@ namespace ScrapySharp.Core.CSharp
 {
     public class CssSelectorExecutor<n>
     {
-        public CssSelectorExecutor(List<n> nodes, List<Token> tokens, INavigationProvider<n> navigator)
+        internal INavigationProvider<n> navigator18;
+        internal FSharpList<n> nodes19;
+        internal FSharpList<Token> tokens20;
+        internal FilterLevel level;
+        internal bool matchAncestors;
+        public CssSelectorExecutor(List<n> nodes, List<Token> tokens, INavigationProvider<n> navigator) : this()
         {
             this.navigator18 = navigator;
             this.nodes19 = ArrayModule.ToList<n>(nodes.ToArray());
             this.tokens20 = ArrayModule.ToList<Token>(tokens.ToArray());
             this.level = FilterLevel.Descendants;
             this.matchAncestors = false;
+        }
+        public CssSelectorExecutor()
+        {
         }
         public bool MatchAncestors
         {
@@ -42,11 +50,6 @@ namespace ScrapySharp.Core.CSharp
             };
             return CssSelectorExecutor.selectElements51(this, whiteSpaces, this.nodes19, this.tokens20);
         }
-        internal INavigationProvider<n> navigator18;
-        internal FSharpList<n> nodes19;
-        internal FSharpList<Token> tokens20;
-        internal FilterLevel level;
-        internal bool matchAncestors;
     }
     internal static class CssSelectorExecutor
     {
@@ -718,6 +721,8 @@ namespace ScrapySharp.Core.CSharp
         }
         internal sealed class selectedNodes55<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string name;
             internal selectedNodes55(CssSelectorExecutor<n> x0, string name)
             {
                 this.x0 = x0;
@@ -727,11 +732,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetName(x).Equals(this.name, StringComparison.InvariantCultureIgnoreCase);
             }
-            public CssSelectorExecutor<n> x0;
-            public string name;
         }
         internal sealed class selectedNodes611<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public char[] whiteSpaces;
+            public string className;
             internal selectedNodes611(CssSelectorExecutor<n> x0, char[] whiteSpaces, string className)
             {
                 this.x0 = x0;
@@ -742,12 +748,11 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, "class", string.Empty).Split(this.whiteSpaces).Contains(this.className);
             }
-            public CssSelectorExecutor<n> x0;
-            public char[] whiteSpaces;
-            public string className;
         }
         internal sealed class selectedNodes682<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string id;
             internal selectedNodes682(CssSelectorExecutor<n> x0, string id)
             {
                 this.x0 = x0;
@@ -757,11 +762,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return string.Equals(this.x0.navigator18.GetId(x), this.id);
             }
-            public CssSelectorExecutor<n> x0;
-            public string id;
         }
         internal sealed class selectedNodes753<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes753(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -772,12 +778,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return string.Equals(this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty), this.value);
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes824<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes824(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -788,12 +794,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).EndsWith(this.value);
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes895<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes895(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -804,12 +810,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes966<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes966(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -820,12 +826,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes1037<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes1037(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -836,24 +842,25 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).ToLowerInvariant().Contains(this.value.ToLowerInvariant());
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes1129
         {
+            public string value;
             public selectedNodes1129(string value)
             {
+                this.value = value;
             }
             internal bool Invoke(string s)
             {
                 return s.Equals(this.value, StringComparison.InvariantCultureIgnoreCase);
             }
-            public string value = _value;
-            private static string _value;
         }
         internal sealed class selectedNodes1108<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public char[] whiteSpaces;
+            public string value;
+            public string name;
             internal selectedNodes1108(CssSelectorExecutor<n> x0, char[] whiteSpaces, string value, string name)
             {
                 this.x0 = x0;
@@ -865,13 +872,12 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).Split(this.whiteSpaces).Any(new Func<string, bool>(new CssSelectorExecutor.selectedNodes1129(this.value).Invoke));
             }
-            public CssSelectorExecutor<n> x0;
-            public char[] whiteSpaces;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes11910<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
+            public string value;
+            public string name;
             internal selectedNodes11910(CssSelectorExecutor<n> x0, string value, string name)
             {
                 this.x0 = x0;
@@ -882,12 +888,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return !string.Equals(this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty), this.value);
             }
-            public CssSelectorExecutor<n> x0;
-            public string value;
-            public string name;
         }
         internal sealed class selectedNodes12611<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
             internal selectedNodes12611(CssSelectorExecutor<n> x0)
             {
                 this.x0 = x0;
@@ -896,10 +900,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return string.Equals(this.x0.navigator18.GetAttributeValue(x, "type", string.Empty), "checkbox");
             }
-            public CssSelectorExecutor<n> x0;
         }
         internal sealed class selectedNodes13312<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
             internal selectedNodes13312(CssSelectorExecutor<n> x0)
             {
                 this.x0 = x0;
@@ -908,10 +912,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.Attributes(x).AllKeys.Contains("checked");
             }
-            public CssSelectorExecutor<n> x0;
         }
         internal sealed class selectedNodes14013<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
             internal selectedNodes14013(CssSelectorExecutor<n> x0)
             {
                 this.x0 = x0;
@@ -920,10 +924,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.Attributes(x).AllKeys.Contains("selected");
             }
-            public CssSelectorExecutor<n> x0;
         }
         internal sealed class selectedNodes14714<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
             internal selectedNodes14714(CssSelectorExecutor<n> x0)
             {
                 this.x0 = x0;
@@ -932,10 +936,10 @@ namespace ScrapySharp.Core.CSharp
             {
                 return this.x0.navigator18.Attributes(x).AllKeys.Contains("disabled");
             }
-            public CssSelectorExecutor<n> x0;
         }
         internal sealed class selectedNodes15415<n> : FSharpFunc<n, bool>
         {
+            public CssSelectorExecutor<n> x0;
             internal selectedNodes15415(CssSelectorExecutor<n> x0)
             {
                 this.x0 = x0;
@@ -944,7 +948,6 @@ namespace ScrapySharp.Core.CSharp
             {
                 return !this.x0.navigator18.Attributes(x).AllKeys.Contains("disabled");
             }
-            public CssSelectorExecutor<n> x0;
         }
     }
 }
