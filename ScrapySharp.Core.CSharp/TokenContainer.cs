@@ -4,6 +4,8 @@ namespace ScrapySharp.Core.CSharp
 {
 	public class TokenContainer
 	{
+		internal Token token;
+		internal int offset;
 		public TokenContainer()
         {
         }
@@ -26,7 +28,5 @@ namespace ScrapySharp.Core.CSharp
 				return this.token;
 			}
 		}
-		internal Token token;
-		internal int offset;
 	}
 }
