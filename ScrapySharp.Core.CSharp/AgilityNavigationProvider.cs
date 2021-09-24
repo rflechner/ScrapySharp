@@ -6,9 +6,6 @@ namespace ScrapySharp.Core.CSharp
 {
     public class AgilityNavigationProvider : INavigationProvider<HtmlNode>
     {
-        public AgilityNavigationProvider()
-        {
-        }
         List<HtmlNode> INavigationProvider<HtmlNode>.ChildNodes(List<HtmlNode> nodes)
         {
             return new List<HtmlNode>(SeqModule.Collect<HtmlNodeCollection, HtmlNodeCollection, HtmlNode>(NavigationProvider.ChildNodes23._instance, SeqModule.Map(NavigationProvider.ChildNodes231._instance, nodes)));
