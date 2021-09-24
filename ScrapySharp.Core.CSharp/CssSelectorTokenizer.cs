@@ -755,7 +755,6 @@ namespace ScrapySharp.Core.CSharp
             x2 = x;
             return FSharpOption<FSharpList<a>>.Some(x2);
         }
-        [Serializable]
         internal sealed class TokenStr501 : FSharpFunc<FSharpList<char>, FSharpOption<FSharpList<char>>>
         {
             internal TokenStr501(string s)
