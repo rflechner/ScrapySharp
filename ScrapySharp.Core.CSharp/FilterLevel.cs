@@ -6,13 +6,13 @@ namespace ScrapySharp.Core.CSharp
     public sealed class FilterLevel : IEquatable<FilterLevel>, IStructuralEquatable, IComparable<FilterLevel>, IComparable, IStructuralComparable
     {
         internal FilterLevel level;
-        public int Tag { get; }
-        public int _tag { get; private set; }
-        public static FilterLevel _unique_Root { get; set; }
-        public static FilterLevel _unique_Children { get; set; }
-        public static FilterLevel _unique_Descendants { get; set; }
-        public static FilterLevel _unique_Parents { get; set; }
-        public static FilterLevel _unique_Ancestors { get; set; }
+        public int Tag;
+        public int _tag;
+        public static FilterLevel _unique_Root;
+        public static FilterLevel _unique_Children;
+        public static FilterLevel _unique_Descendants;
+        public static FilterLevel _unique_Parents;
+        public static FilterLevel _unique_Ancestors;
         public static class Tags
         {
             public const int Root = 0;
