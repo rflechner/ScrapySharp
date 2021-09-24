@@ -36,7 +36,7 @@ namespace ScrapySharp.Core.CSharp
         {
             get
             {
-                return this.Tag == 0;
+                return this.Tag == Tags.Root;
             }
         }
         public static FilterLevel Children
@@ -50,7 +50,7 @@ namespace ScrapySharp.Core.CSharp
         {
             get
             {
-                return this.Tag == 1;
+                return this.Tag == Tags.Children;
             }
         }
         public static FilterLevel Descendants
@@ -64,7 +64,7 @@ namespace ScrapySharp.Core.CSharp
         {
             get
             {
-                return this.Tag == 2;
+                return this.Tag == Tags.Descendants;
             }
         }
         public static FilterLevel Parents
@@ -78,7 +78,7 @@ namespace ScrapySharp.Core.CSharp
         {
             get
             {
-                return this.Tag == 3;
+                return this.Tag == Tags.Parents;
             }
         }
         public static FilterLevel Ancestors
@@ -92,7 +92,7 @@ namespace ScrapySharp.Core.CSharp
         {
             get
             {
-                return this.Tag == 4;
+                return this.Tag == Tags.Ancestors;
             }
         }
 
