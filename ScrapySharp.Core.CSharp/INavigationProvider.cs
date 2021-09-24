@@ -12,12 +12,6 @@ namespace ScrapySharp.Core.CSharp
         List<t> ParentNodes(List<t> ts);
 		List<t> AncestorsAndSelf(List<t> ts);
 		string GetName(t ts);
-		[CompilationArgumentCounts(new int[]
-		{
-			1,
-			1,
-			1
-		})]
 		string GetAttributeValue(t ts, string n1, string n2);
 		string GetId(t ts);
 		NameValueCollection Attributes(t ts);
