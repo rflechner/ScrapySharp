@@ -36,7 +36,7 @@ namespace ScrapySharp.Core.CSharp
         }
         NameValueCollection INavigationProvider<HtmlNode>.Attributes(HtmlNode nodes)
         {
-            NameValueCollection attrs = new();
+            NameValueCollection attrs = new NameValueCollection();
             HtmlAttributeCollection attributes = nodes.Attributes;
             foreach (HtmlAttribute attr in attributes)
             {
