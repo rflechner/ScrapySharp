@@ -12,16 +12,13 @@ namespace ScrapySharp.Core.CSharp
         internal FSharpList<Token> tokens20;
         internal FilterLevel level;
         internal bool matchAncestors;
-        public CssSelectorExecutor(List<n> nodes, List<Token> tokens, INavigationProvider<n> navigator) : this()
+        public CssSelectorExecutor(List<n> nodes, List<Token> tokens, INavigationProvider<n> navigator)
         {
             this.navigator18 = navigator;
             this.nodes19 = ArrayModule.ToList<n>(nodes.ToArray());
             this.tokens20 = ArrayModule.ToList<Token>(tokens.ToArray());
             this.level = FilterLevel.Descendants;
             this.matchAncestors = false;
-        }
-        public CssSelectorExecutor()
-        {
         }
         public bool MatchAncestors
         {
@@ -662,8 +659,8 @@ namespace ScrapySharp.Core.CSharp
                             whiteSpaces = array15;
                             x = cssSelectorExecutor15;
                             continue;
-                            }
-            case 21:
+                        }
+                    case 21:
                         {
                             Token.Disabled disabled = (Token.Disabled)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;

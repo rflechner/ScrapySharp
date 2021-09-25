@@ -6,10 +6,7 @@ namespace ScrapySharp.Core.CSharp
 	{
 		internal Token token;
 		internal int offset;
-		public TokenContainer()
-        {
-        }
-		public TokenContainer(Token token, int offset) : this()
+		public TokenContainer(Token token, int offset)
 		{
 			this.token = token;
 			this.offset = offset;

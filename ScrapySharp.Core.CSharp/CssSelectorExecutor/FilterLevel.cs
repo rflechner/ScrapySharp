@@ -7,11 +7,11 @@ namespace ScrapySharp.Core.CSharp
     {
         public int Tag;
         internal readonly int _tag;
-        internal static readonly FilterLevel _unique_Root;
-        internal static readonly FilterLevel _unique_Children;
-        internal static readonly FilterLevel _unique_Descendants;
-        internal static readonly FilterLevel _unique_Parents;
-        internal static readonly FilterLevel _unique_Ancestors;
+        internal static FilterLevel _unique_Root { get; set; }
+        internal static FilterLevel _unique_Children { get; set; }
+        internal static FilterLevel _unique_Descendants { get; set; }
+        internal static FilterLevel _unique_Parents { get; set; }
+        internal static FilterLevel _unique_Ancestors { get; set; }
         internal FilterLevel(int _tag)
         {
             Tag = _tag;
@@ -21,10 +21,6 @@ namespace ScrapySharp.Core.CSharp
             get
             {
                 return _unique_Root;
-            }
-            set
-            {
-                Root = new FilterLevel(0);
             }
         }
         public bool IsRoot
@@ -40,10 +36,6 @@ namespace ScrapySharp.Core.CSharp
             {
                 return _unique_Children;
             }
-            set
-            {
-                Children = new FilterLevel(1);
-            }
         }
         public bool IsChildren
         {
@@ -57,10 +49,6 @@ namespace ScrapySharp.Core.CSharp
             get
             {
                 return _unique_Descendants;
-            }
-            set
-            {
-                Descendants = new FilterLevel(2);
             }
         }
         public bool IsDescendants
@@ -76,10 +64,6 @@ namespace ScrapySharp.Core.CSharp
             {
                 return _unique_Parents;
             }
-            set
-            {
-                Parents = new FilterLevel(3);
-            }
         }
         public bool IsParents
         {
@@ -93,10 +77,6 @@ namespace ScrapySharp.Core.CSharp
             get
             {
                 return _unique_Ancestors;
-            }
-            set
-            {
-                Ancestors = new FilterLevel(4);
             }
         }
         public bool IsAncestors
