@@ -7,16 +7,16 @@ namespace ScrapySharp.Core.CSharp
 {
     public class CssSelectorExecutor<n>
     {
-        internal INavigationProvider<n> navigator18;
-        internal FSharpList<n> nodes19;
-        internal FSharpList<Token> tokens20;
+        internal INavigationProvider<n> navigator;
+        internal FSharpList<n> nodes;
+        internal FSharpList<Token> tokens;
         internal FilterLevel level;
         internal bool matchAncestors;
         public CssSelectorExecutor(List<n> nodes, List<Token> tokens, INavigationProvider<n> navigator)
         {
-            this.navigator18 = navigator;
-            this.nodes19 = ArrayModule.ToList<n>(nodes.ToArray());
-            this.tokens20 = ArrayModule.ToList<Token>(tokens.ToArray());
+            this.navigator = navigator;
+            this.nodes = ArrayModule.ToList<n>(nodes.ToArray());
+            this.tokens = ArrayModule.ToList<Token>(tokens.ToArray());
             this.level = FilterLevel.Descendants;
             this.matchAncestors = false;
         }
@@ -45,40 +45,40 @@ namespace ScrapySharp.Core.CSharp
                 '\r',
                 '\n'
             };
-            return CssSelectorExecutor.selectElements51(this, whiteSpaces, this.nodes19, this.tokens20);
+            return CssSelectorExecutor.selectElements(this, whiteSpaces, this.nodes, this.tokens);
         }
     }
     internal static class CssSelectorExecutor
     {
-        internal static FSharpList<n> getTargets39<n>(CssSelectorExecutor<n> x, FSharpList<n> acc)
+        internal static FSharpList<n> getTargets<n>(CssSelectorExecutor<n> x, FSharpList<n> acc)
         {
             FilterLevel level = x.level;
             FilterLevel obj = FilterLevel.Children;
             if (level.Equals(obj, LanguagePrimitives.GenericEqualityComparer))
             {
-                return ArrayModule.ToList<n>(x.navigator18.ChildNodes(new List<n>(acc)).ToArray());
+                return ArrayModule.ToList<n>(x.navigator.ChildNodes(new List<n>(acc)).ToArray());
             }
             level = x.level;
             obj = FilterLevel.Descendants;
             if (level.Equals(obj, LanguagePrimitives.GenericEqualityComparer))
             {
-                return ArrayModule.ToList<n>(x.navigator18.Descendants(new List<n>(acc)).ToArray());
+                return ArrayModule.ToList<n>(x.navigator.Descendants(new List<n>(acc)).ToArray());
             }
             level = x.level;
             obj = FilterLevel.Parents;
             if (level.Equals(obj, LanguagePrimitives.GenericEqualityComparer))
             {
-                return ArrayModule.ToList<n>(x.navigator18.ParentNodes(new List<n>(acc)).ToArray());
+                return ArrayModule.ToList<n>(x.navigator.ParentNodes(new List<n>(acc)).ToArray());
             }
             level = x.level;
             obj = FilterLevel.Ancestors;
             if (level.Equals(obj, LanguagePrimitives.GenericEqualityComparer))
             {
-                return ArrayModule.ToList<n>(x.navigator18.AncestorsAndSelf(new List<n>(acc)).ToArray());
+                return ArrayModule.ToList<n>(x.navigator.AncestorsAndSelf(new List<n>(acc)).ToArray());
             }
             return acc;
         }
-        internal static FSharpList<n> selectElements51<n>(CssSelectorExecutor<n> x, char[] whiteSpaces, FSharpList<n> acc, FSharpList<Token> source)
+        internal static FSharpList<n> selectElements<n>(CssSelectorExecutor<n> x, char[] whiteSpaces, FSharpList<n> acc, FSharpList<Token> source)
         {
             while (source.TailOrNull != null)
             {
@@ -98,7 +98,7 @@ namespace ScrapySharp.Core.CSharp
                                     int o4 = cssClass.item1;
                                     int num = classPrefix.item;
                                     string item = cssClass.item2;
-                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes611<n>(x, whiteSpaces, item), selectedNodes));
                                     x.level = FilterLevel.Root;
                                     CssSelectorExecutor<n> cssSelectorExecutor = x;
@@ -131,7 +131,7 @@ namespace ScrapySharp.Core.CSharp
                                     int o4 = cssId.item1;
                                     int num = idPrefix.item;
                                     string item = cssId.item2;
-                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes682<n>(x, item), selectedNodes));
                                     x.level = FilterLevel.Root;
                                     CssSelectorExecutor<n> cssSelectorExecutor2 = x;
@@ -157,7 +157,7 @@ namespace ScrapySharp.Core.CSharp
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = tagName.item1;
                             string item = tagName.item2;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(selectedNodes);
                             selectedNodes = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes55<n>(x, item), selectedNodes2));
                             x.level = FilterLevel.Root;
@@ -230,7 +230,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes753<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor5 = x;
@@ -283,7 +283,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes824<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor6 = x;
@@ -336,7 +336,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes895<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor7 = x;
@@ -389,7 +389,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes966<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor8 = x;
@@ -442,7 +442,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes1037<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor9 = x;
@@ -495,7 +495,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes1108<n>(x, whiteSpaces, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor10 = x;
@@ -548,7 +548,7 @@ namespace ScrapySharp.Core.CSharp
                                                                     int item3 = attributeName.item1;
                                                                     int item4 = openAttribute.item;
                                                                     string item5 = attributeName.item2;
-                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                                                                    FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                                                                     FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes11910<n>(x, item, item5), selectedNodes));
                                                                     x.level = FilterLevel.Root;
                                                                     CssSelectorExecutor<n> cssSelectorExecutor11 = x;
@@ -631,7 +631,7 @@ namespace ScrapySharp.Core.CSharp
                             Token.Checkbox checkbox = (Token.Checkbox)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = checkbox.item;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes12611<n>(x), selectedNodes));
                             x.level = FilterLevel.Root;
                             CssSelectorExecutor<n> cssSelectorExecutor14 = x;
@@ -648,7 +648,7 @@ namespace ScrapySharp.Core.CSharp
                             Token.Checked checkeds = (Token.Checked)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = checkeds.item;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes13312<n>(x), selectedNodes));
                             x.level = FilterLevel.Root;
                             CssSelectorExecutor<n> cssSelectorExecutor15 = x;
@@ -665,7 +665,7 @@ namespace ScrapySharp.Core.CSharp
                             Token.Disabled disabled = (Token.Disabled)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = disabled.item;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes14714<n>(x), selectedNodes));
                             x.level = FilterLevel.Root;
                             CssSelectorExecutor<n> cssSelectorExecutor16 = x;
@@ -682,7 +682,7 @@ namespace ScrapySharp.Core.CSharp
                             Token.Enabled enabled = (Token.Enabled)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = enabled.item;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes15415<n>(x), selectedNodes));
                             x.level = FilterLevel.Root;
                             CssSelectorExecutor<n> cssSelectorExecutor17 = x;
@@ -699,7 +699,7 @@ namespace ScrapySharp.Core.CSharp
                             Token.Selected selected = (Token.Selected)fsharpList.HeadOrDefault;
                             FSharpList<Token> t = fsharpList.TailOrNull;
                             int o4 = selected.item;
-                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets39<n>(x, acc);
+                            FSharpList<n> selectedNodes = CssSelectorExecutor.getTargets<n>(x, acc);
                             FSharpList<n> selectedNodes2 = SeqModule.ToList<n>(SeqModule.Filter<n>(new CssSelectorExecutor.selectedNodes14013<n>(x), selectedNodes));
                             x.level = FilterLevel.Root;
                             CssSelectorExecutor<n> cssSelectorExecutor18 = x;
@@ -727,7 +727,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetName(x).Equals(this.name, StringComparison.InvariantCultureIgnoreCase);
+                return this.x0.navigator.GetName(x).Equals(this.name, StringComparison.InvariantCultureIgnoreCase);
             }
         }
         internal sealed class selectedNodes611<n> : FSharpFunc<n, bool>
@@ -743,7 +743,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, "class", string.Empty).Split(this.whiteSpaces).Contains(this.className);
+                return this.x0.navigator.GetAttributeValue(x, "class", string.Empty).Split(this.whiteSpaces).Contains(this.className);
             }
         }
         internal sealed class selectedNodes682<n> : FSharpFunc<n, bool>
@@ -757,7 +757,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return string.Equals(this.x0.navigator18.GetId(x), this.id);
+                return string.Equals(this.x0.navigator.GetId(x), this.id);
             }
         }
         internal sealed class selectedNodes753<n> : FSharpFunc<n, bool>
@@ -773,7 +773,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return string.Equals(this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty), this.value);
+                return string.Equals(this.x0.navigator.GetAttributeValue(x, this.name, string.Empty), this.value);
             }
         }
         internal sealed class selectedNodes824<n> : FSharpFunc<n, bool>
@@ -789,7 +789,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).EndsWith(this.value);
+                return this.x0.navigator.GetAttributeValue(x, this.name, string.Empty).EndsWith(this.value);
             }
         }
         internal sealed class selectedNodes895<n> : FSharpFunc<n, bool>
@@ -805,7 +805,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
+                return this.x0.navigator.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
             }
         }
         internal sealed class selectedNodes966<n> : FSharpFunc<n, bool>
@@ -821,7 +821,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
+                return this.x0.navigator.GetAttributeValue(x, this.name, string.Empty).StartsWith(this.value);
             }
         }
         internal sealed class selectedNodes1037<n> : FSharpFunc<n, bool>
@@ -837,7 +837,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).ToLowerInvariant().Contains(this.value.ToLowerInvariant());
+                return this.x0.navigator.GetAttributeValue(x, this.name, string.Empty).ToLowerInvariant().Contains(this.value.ToLowerInvariant());
             }
         }
         internal sealed class selectedNodes1129
@@ -867,7 +867,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty).Split(this.whiteSpaces).Any(new Func<string, bool>(new CssSelectorExecutor.selectedNodes1129(this.value).Invoke));
+                return this.x0.navigator.GetAttributeValue(x, this.name, string.Empty).Split(this.whiteSpaces).Any(new Func<string, bool>(new CssSelectorExecutor.selectedNodes1129(this.value).Invoke));
             }
         }
         internal sealed class selectedNodes11910<n> : FSharpFunc<n, bool>
@@ -883,7 +883,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return !string.Equals(this.x0.navigator18.GetAttributeValue(x, this.name, string.Empty), this.value);
+                return !string.Equals(this.x0.navigator.GetAttributeValue(x, this.name, string.Empty), this.value);
             }
         }
         internal sealed class selectedNodes12611<n> : FSharpFunc<n, bool>
@@ -895,7 +895,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return string.Equals(this.x0.navigator18.GetAttributeValue(x, "type", string.Empty), "checkbox");
+                return string.Equals(this.x0.navigator.GetAttributeValue(x, "type", string.Empty), "checkbox");
             }
         }
         internal sealed class selectedNodes13312<n> : FSharpFunc<n, bool>
@@ -907,7 +907,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.Attributes(x).AllKeys.Contains("checked");
+                return this.x0.navigator.Attributes(x).AllKeys.Contains("checked");
             }
         }
         internal sealed class selectedNodes14013<n> : FSharpFunc<n, bool>
@@ -919,7 +919,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.Attributes(x).AllKeys.Contains("selected");
+                return this.x0.navigator.Attributes(x).AllKeys.Contains("selected");
             }
         }
         internal sealed class selectedNodes14714<n> : FSharpFunc<n, bool>
@@ -931,7 +931,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return this.x0.navigator18.Attributes(x).AllKeys.Contains("disabled");
+                return this.x0.navigator.Attributes(x).AllKeys.Contains("disabled");
             }
         }
         internal sealed class selectedNodes15415<n> : FSharpFunc<n, bool>
@@ -943,7 +943,7 @@ namespace ScrapySharp.Core.CSharp
             }
             public override bool Invoke(n x)
             {
-                return !this.x0.navigator18.Attributes(x).AllKeys.Contains("disabled");
+                return !this.x0.navigator.Attributes(x).AllKeys.Contains("disabled");
             }
         }
     }
