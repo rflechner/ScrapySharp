@@ -2,6 +2,7 @@
 
 using NUnit.Framework;
 using ScrapySharp.Core;
+using ScrapySharp.Core.CSharp;
 
 namespace ScrapySharp.Tests
 {
