@@ -1,0 +1,91 @@
+@model ScrapySharp.Tests.CrawlSite.ViewModels.CategoryProductsViewModel
+
+@{
+    ViewBag.Title = $"Category {Model.Category.Name}";
+    Layout = "_Layout";
+}
+
+<div>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">@Html.ActionLink("Home", "Index", "Home")</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Category.Name</li>
+      </ol>
+    </nav>
+
+    <div id="products">
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Likes</th>
+                <th scope="col"> </th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (var i = 0; i < Model.Products.Length; i++)
+            {
+                var product = Model.Products[i];
+                <tr>
+                    <td>@product.Name</td>
+                    <td>@product.LikesCount likes</td>
+                    <td>
+                        @Html.ActionLink("Details", "Product", "Home", routeValues:new {id=product.Id.Value})
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    
+    <nav aria-label="pages">
+        <ul class="pagination">
+            
+                <li class="@(Model.IsFirstPage ? "page-item disabled" : "page-item ")">
+                    @Html.ActionLink("Previous", "Category", "Home", 
+                                                                routeValues: new
+                                                                    {
+                                                                        page = Model.Page-1,
+                                                                        pageSize = Model.PageSize
+                                                                    }, 
+                                                                htmlAttributes:new
+                                                                    {
+                                                                        @class = "page-link",
+                                                                        tabindex=-1
+                                                                    })
+                </li>
+            @for (var i = 1; i <= Model.PageCount; i++)
+            {
+                <li class="@(i == Model.Page ? "page-item active" : "page-item")">
+                    @Html.ActionLink(i.ToString(), "Category", "Home", 
+                        routeValues: new
+                            {
+                                page = i,
+                                pageSize = Model.PageSize
+                            }, 
+                        htmlAttributes:new
+                            {
+                                @class = "page-link"
+                            })
+                </li>
+            }
+            
+                <li class="@(Model.IsLastPage ? "page-item disabled" : "page-item ")">
+                    @Html.ActionLink("Next", "Category", "Home", 
+                                            routeValues: new
+                                                {
+                                                    page = Model.Page+1,
+                                                    pageSize = Model.PageSize
+                                                }, 
+                                            htmlAttributes:new
+                                                {
+                                                    @class = "page-link"
+                                                })
+                </li>
+            
+        </ul>
+    </nav>
+    
+
+</div>

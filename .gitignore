@@ -289,3 +289,5 @@ __pycache__/
 \.hg/
 
 .ionide/
+
+artifacts/

@@ -1,0 +1,34 @@
+@model ProductCategoryView
+
+@{
+    ViewBag.Title = $"Product {Model.Product.Name}";
+    Layout = "_Layout";
+}
+
+<div>
+    
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">@Html.ActionLink("Home", "Index", "Home")</a></li>
+        <li class="breadcrumb-item"><a href="#">@Html.ActionLink(Model.Category.Name, "Category", "Home", routeValues: new { id=Model.Category.Id })</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Product.Name</li>
+      </ol>
+    </nav>
+
+    <h1 class="display-4">@Model.Product.Name</h1>
+
+    <div class="shadow p-3 mb-5 bg-white rounded"><span class="price">@Model.Product.LikesCount</span> likes</div>
+    
+    <div class="shadow-sm p-3 mb-5 bg-white rounded">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam sapien velit, auctor ut congue a, sodales vitae turpis. Pellentesque aliquet gravida dui, non ullamcorper tellus scelerisque a. Donec interdum dolor magna, sit amet tristique dui aliquet gravida. Aliquam dolor enim, porttitor sed nunc nec, gravida eleifend libero. Vestibulum nunc diam, vehicula in ipsum a, fringilla ornare leo. Cras vulputate, justo sed volutpat bibendum, velit mauris pellentesque arcu, ullamcorper tincidunt neque augue ac massa. Mauris eu neque elit. Nam et tellus imperdiet, dignissim nunc nec, rhoncus est. Sed ultrices libero vitae sapien laoreet condimentum. Quisque congue et tortor non iaculis. Fusce id augue commodo, scelerisque felis sed, congue purus. Pellentesque molestie euismod lacus, nec porttitor ante vestibulum eget. Nunc sodales finibus lorem sed semper. Suspendisse vel nulla ex. Maecenas at lorem id neque feugiat consequat. Ut at ante placerat, pulvinar magna nec, semper est.
+    </div>
+    
+    <div class="shadow-sm p-3 mb-5 bg-white rounded">
+        Phasellus fringilla lacinia nibh eu vehicula. Fusce suscipit sagittis nulla maximus fermentum. Duis maximus ex eget leo ultricies, ut accumsan odio congue. Vestibulum vitae accumsan ante, in tempor nisi. Nam volutpat nulla et tellus venenatis elementum. Aliquam ullamcorper varius quam, nec fermentum orci sodales vel. Integer ac nulla lacus. Proin hendrerit ipsum ut ante cursus, a lobortis lectus interdum. Suspendisse et ultrices nunc. Curabitur eget lorem non justo sollicitudin vehicula.
+    </div>
+    
+    <div class="shadow-sm p-3 mb-5 bg-white rounded">
+        Curabitur vestibulum volutpat nisi, eget ullamcorper dui. Morbi placerat a augue viverra cursus. Morbi ut auctor diam. Nam gravida urna sit amet augue euismod, at suscipit dolor auctor. Phasellus eu eros luctus, dapibus turpis non, ultrices odio. In congue, eros vitae convallis tincidunt, lorem erat ullamcorper massa, in congue massa risus vitae mauris. Duis congue et eros et accumsan. Aenean id pharetra eros, non aliquam justo. Donec dapibus molestie neque, vitae cursus eros bibendum at. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Nunc fringilla, leo commodo fermentum molestie, enim nulla faucibus ligula, vitae tincidunt dolor sem ac quam. Mauris consectetur sit amet nibh ac suscipit. Maecenas consequat accumsan interdum.
+    </div>
+
+</div>

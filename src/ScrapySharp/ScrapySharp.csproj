@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);IncludeP2PAssets</TargetsForTfmSpecificBuildOutput>
+
+    <AssemblyName>ScrapySharp</AssemblyName>
+    <Description>Scraping Framework containing :
+- a web client able to simulate a web browser.
+- an HtmlAgilityPack extension to select elements using css selector (like JQuery)</Description>
+    <Copyright>Copyright 2011 Romain Flechner</Copyright>
+    <NeutralLanguage>fr-FR</NeutralLanguage>
+    <Authors>Romain Flechner</Authors>
+    <OutputType>Library</OutputType>
+    <PackageId>ScrapySharp</PackageId>
+    <PackageTags>Scraping;html;css;linq;agility</PackageTags>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageIconUrl></PackageIconUrl>
+    <PackageProjectUrl>https://github.com/rflechner/ScrapySharp</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/rflechner/ScrapySharp/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>hg</RepositoryType>
+    <RepositoryUrl>https://github.com/rflechner/ScrapySharp.git</RepositoryUrl>
+    <LangVersion>default</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.33" />
+    <PackageReference Include="FSharp.Core" Version="7.0.200" />
+    <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" PrivateAssets="All" />
+  </ItemGroup>
+  <Target Name="IncludeP2PAssets">
+    <ItemGroup>
+      <BuildOutputInPackage Include="$(OutputPath)ScrapySharp.Core.dll" />
+    </ItemGroup>
+  </Target>
+</Project>

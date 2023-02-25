@@ -1,3 +1,7 @@
+# 4.0.0
+
+Use of injectable HttpClient.
+
 # 3.0.0
 
 Alpha seems to be stable so I release.
