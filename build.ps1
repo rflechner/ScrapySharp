@@ -46,9 +46,20 @@ foreach ($note in $notes) {
 
 $artefactFolder = './artefacts'
 
+Remove-Item $artefactFolder -Recurse
+
 dotnet restore
 dotnet test tests\ScrapySharp.Tests\ScrapySharp.Tests.csproj
 dotnet test tests\ScrapySharp.IntegrationTests\ScrapySharp.IntegrationTests.csproj
 dotnet build --configuration release
-dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
+
+$branch = git branch --show-current
+$buildnumber = [System.DateTime]::Now.Ticks
+
+if ($branch -eq 'master') {
+    dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
+}
+else {
+    dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes --version-suffix "-$branch-$buildnumber"
+}
 
