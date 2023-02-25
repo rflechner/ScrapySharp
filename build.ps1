@@ -56,10 +56,12 @@ dotnet build --configuration release
 $branch = git branch --show-current
 $buildnumber = [System.DateTime]::Now.Ticks
 
-if ($branch -eq 'master') {
-    dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
+if ($branch -ne 'master') {
+    $versionSuffix = "-$branch-$buildnumber"
+    $version = $version + $versionSuffix
 }
-else {
-    dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes --version-suffix "-$branch-$buildnumber"
-}
+
+Write-Host -ForegroundColor Green -Message "NuGet version are $version"
+
+dotnet pack --no-build --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
 
