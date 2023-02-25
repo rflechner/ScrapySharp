@@ -6,7 +6,7 @@ namespace ScrapySharp.Cache
 {
     public sealed class WebResourceStorage
     {
-        private const string basePath = "_WebResourcesCache";
+        private const string BasePath = "_WebResourcesCache";
         private MemoryCache cache;
 
         public WebResourceStorage()
@@ -16,7 +16,7 @@ namespace ScrapySharp.Cache
 
         private void Initialize()
         {
-            cache = new MemoryCache(basePath);
+            cache = new MemoryCache(BasePath);
         }
 
         public void Save(WebResource webResource)
@@ -34,16 +34,8 @@ namespace ScrapySharp.Cache
             return cache.GetCacheItem(key) != null;
         }
 
-        private static WebResourceStorage current;
+        private static readonly Lazy<WebResourceStorage> current = new(() => new WebResourceStorage());
 
-        public static WebResourceStorage Current
-        {
-            get
-            {
-                if (current == null)
-                    current = new WebResourceStorage();
-                return current;
-            }
-        }
+        public static WebResourceStorage Current => current.Value;
     }
 }

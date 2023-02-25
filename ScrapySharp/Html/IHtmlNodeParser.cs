@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace ScrapySharp.Html.Forms
+namespace ScrapySharp.Html
 {
     internal interface IHtmlNodeParser<TNode>
     {

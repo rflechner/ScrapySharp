@@ -20,21 +20,12 @@ namespace ScrapySharp.Html.Forms
                 Attributes.Add(attribute.Name, attribute.Value);
         }
 
-        public IEnumerable<IHtmlNodeParser<HtmlNode>> CssSelect(string selector)
-        {
-            return node.CssSelect(selector).Select(n => new AgilityNodeParser(n));
-        }
+        public IEnumerable<IHtmlNodeParser<HtmlNode>> CssSelect(string selector) => node.CssSelect(selector).Select(n => new AgilityNodeParser(n));
 
-        public string GetAttributeValue(string name)
-        {
-            return node.GetAttributeValue(name, string.Empty);
-        }
+        public string GetAttributeValue(string name) => node.GetAttributeValue(name, string.Empty);
 
-        public NameValueCollection Attributes { get; private set; }
+        public NameValueCollection Attributes { get; }
         
-        public string InnerText
-        {
-            get { return node.InnerText; }
-        }
+        public string InnerText => node.InnerText;
     }
 }

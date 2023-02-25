@@ -8,13 +8,24 @@ namespace ScrapySharp.Extensions
 {
     public class HElementNavigationProvider : INavigationProvider<HElement>
     {
-        public List<HElement> ChildNodes(List<HElement> nodes) => nodes.SelectMany(n => n.Children).ToList();
+        public IEnumerable<HElement> ChildNodes(IEnumerable<HElement> nodes) => nodes.SelectMany(n => n.Children);
 
-        public List<HElement> Descendants(List<HElement> nodes) => nodes.SelectMany(n => n.Descendants()).ToList();
+        public IEnumerable<HElement> Descendants(IEnumerable<HElement> nodes) => nodes.SelectMany(n => n.Descendants());
 
-        public List<HElement> ParentNodes(List<HElement> nodes) => nodes.Select(n => n.ParentNode).ToList();
+        public IEnumerable<HElement> ParentNodes(IEnumerable<HElement> nodes) => nodes.Select(n => n.ParentNode);
 
-        public List<HElement> AncestorsAndSelf(List<HElement> nodes) => nodes.SelectMany(n => n.Ancestors()).Concat(nodes).ToList();
+        public IEnumerable<HElement> AncestorsAndSelf(IEnumerable<HElement> nodes)
+        {
+            foreach (var n in nodes)
+            {
+                foreach (var ancestor in n.Ancestors())
+                {
+                    yield return ancestor;
+                }
+
+                yield return n;
+            }
+        }
 
         public string GetName(HElement node) => node.Name;
 
@@ -22,11 +33,6 @@ namespace ScrapySharp.Extensions
 
         public string GetId(HElement node) => node.Id;
 
-        public NameValueCollection Attributes(HElement node)
-        {
-            if (node.Attributes == null)
-                return new NameValueCollection();
-            return node.Attributes;
-        }
+        public NameValueCollection Attributes(HElement node) => node.Attributes ?? new NameValueCollection();
     }
 }

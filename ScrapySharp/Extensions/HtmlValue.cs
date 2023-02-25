@@ -5,6 +5,13 @@ namespace ScrapySharp.Extensions
 {
     public class HtmlValue : IEquatable<HtmlValue>
     {
+        private const NumberStyles ParsingNumberStyles = 
+            NumberStyles.AllowLeadingWhite 
+            | NumberStyles.AllowTrailingWhite 
+            | NumberStyles.AllowLeadingSign
+            | NumberStyles.AllowDecimalPoint
+            | NumberStyles.AllowExponent;
+
         private readonly string value;
 
         public HtmlValue(string value)
@@ -12,29 +19,13 @@ namespace ScrapySharp.Extensions
             this.value = value;
         }
 
-        public override string ToString()
-        {
-            return value;
-        }
+        public override string ToString() => value;
 
-        public static implicit operator string(HtmlValue htmlValue)
-        {
-            if (htmlValue == null)
-                return null;
-            return htmlValue.value;
-        }
+        public static implicit operator string(HtmlValue htmlValue) => htmlValue == null ? null : htmlValue.value;
 
-        public static implicit operator HtmlValue(string value)
-        {
-            return new(value);
-        }
+        public static implicit operator HtmlValue(string value) => new(value);
 
-        public static explicit operator bool(HtmlValue htmlValue)
-        {
-            if (htmlValue == null)
-                return false;
-            return Convert.ToBoolean(htmlValue.value);
-        }
+        public static explicit operator bool(HtmlValue htmlValue) => htmlValue != null && Convert.ToBoolean(htmlValue.value);
 
         public static explicit operator bool?(HtmlValue htmlValue)
         {
@@ -43,11 +34,7 @@ namespace ScrapySharp.Extensions
             return null;
         }
 
-        public static explicit operator int(HtmlValue htmlValue)
-        {
-            return int.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite 
-                | NumberStyles.AllowTrailingWhite, NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator int(HtmlValue htmlValue) => int.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator int?(HtmlValue htmlValue)
         {
@@ -56,81 +43,47 @@ namespace ScrapySharp.Extensions
             return null;
         }
 
-        public static explicit operator uint(HtmlValue htmlValue)
-        {
-            return uint.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite 
-                | NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, 
-                NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator uint(HtmlValue htmlValue) => uint.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator uint?(HtmlValue htmlValue)
         {
-            var styles = NumberStyles.AllowLeadingWhite 
-                         | NumberStyles.AllowTrailingWhite 
-                         | NumberStyles.AllowLeadingSign
-                         | NumberStyles.AllowDecimalPoint
-                         | NumberStyles.AllowExponent;
-            if (uint.TryParse(htmlValue.value, styles, NumberFormatInfo.InvariantInfo, out var result))
+            if (uint.TryParse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
 
-        public static explicit operator long(HtmlValue htmlValue)
-        {
-            return long.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator long(HtmlValue htmlValue) => long.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator long?(HtmlValue htmlValue)
         {
-            long result;
-            if (long.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, out result))
+            if (long.TryParse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
 
-        public static explicit operator ulong(HtmlValue htmlValue)
-        {
-            return ulong.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator ulong(HtmlValue htmlValue) => ulong.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator ulong?(HtmlValue htmlValue)
         {
-            if (ulong.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                                                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
-                out var result))
+            if (ulong.TryParse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
 
-        public static explicit operator float(HtmlValue htmlValue)
-        {
-            return float.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator float(HtmlValue htmlValue) => float.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator float?(HtmlValue htmlValue)
         {
-            if (float.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                                                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
-                out var result))
+            if (float.TryParse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
 
-        public static explicit operator double(HtmlValue htmlValue)
-        {
-            return double.Parse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo);
-        }
+        public static explicit operator double(HtmlValue htmlValue) => double.Parse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo);
 
         public static explicit operator double?(HtmlValue htmlValue)
         {
-            if (double.TryParse(htmlValue.value, NumberStyles.AllowLeadingWhite | NumberStyles.AllowTrailingWhite | NumberStyles.AllowLeadingSign
-                                                 | NumberStyles.AllowDecimalPoint | NumberStyles.AllowExponent, NumberFormatInfo.InvariantInfo, 
-                out var result))
+            if (double.TryParse(htmlValue.value, ParsingNumberStyles, NumberFormatInfo.InvariantInfo, out var result))
                 return result;
             return null;
         }
@@ -144,10 +97,7 @@ namespace ScrapySharp.Extensions
             return null;
         }
 
-        public static explicit operator DateTime(HtmlValue htmlValue)
-        {
-            return htmlValue == null ? DateTime.MinValue : htmlValue.value.ToDate();
-        }
+        public static explicit operator DateTime(HtmlValue htmlValue) => htmlValue == null ? DateTime.MinValue : htmlValue.value.ToDate();
 
         public static explicit operator DateTime?(HtmlValue htmlValue)
         {
@@ -156,10 +106,7 @@ namespace ScrapySharp.Extensions
             return htmlValue.value.ToDate();
         }
         
-        public static explicit operator TimeSpan(HtmlValue htmlValue)
-        {
-            return htmlValue == null ? TimeSpan.Zero : TimeSpan.Parse(htmlValue.value);
-        }
+        public static explicit operator TimeSpan(HtmlValue htmlValue) => htmlValue == null ? TimeSpan.Zero : TimeSpan.Parse(htmlValue.value);
 
         public static explicit operator TimeSpan?(HtmlValue htmlValue)
         {
@@ -168,10 +115,7 @@ namespace ScrapySharp.Extensions
             return null;
         }
 
-        public static explicit operator Guid(HtmlValue htmlValue)
-        {
-            return htmlValue == null ? Guid.Empty : new Guid(htmlValue.value);
-        }
+        public static explicit operator Guid(HtmlValue htmlValue) => htmlValue == null ? Guid.Empty : new Guid(htmlValue.value);
 
         public static explicit operator Guid?(HtmlValue htmlValue)
         {
@@ -197,20 +141,11 @@ namespace ScrapySharp.Extensions
             return Equals((HtmlValue) obj);
         }
 
-        public override int GetHashCode()
-        {
-            return (value != null ? value.GetHashCode() : 0);
-        }
+        public override int GetHashCode() => value != null ? value.GetHashCode() : 0;
 
-        public static bool operator ==(HtmlValue left, HtmlValue right)
-        {
-            return Equals(left, right);
-        }
+        public static bool operator ==(HtmlValue left, HtmlValue right) => Equals(left, right);
 
-        public static bool operator !=(HtmlValue left, HtmlValue right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator !=(HtmlValue left, HtmlValue right) => !Equals(left, right);
 
         #endregion
 

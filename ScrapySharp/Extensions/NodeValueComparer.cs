@@ -11,21 +11,14 @@ namespace ScrapySharp.Extensions
             this.comparison = comparison;
         }
 
-        public bool Compare(string value1, string value2)
-        {
-            switch (comparison)
+        public bool Compare(string value1, string value2) =>
+            comparison switch
             {
-                case NodeValueComparison.Equals:
-                    return value1.Equals(value2, StringComparison.InvariantCultureIgnoreCase);
-                case NodeValueComparison.StartsWith:
-                    return value1.StartsWith(value2, StringComparison.InvariantCultureIgnoreCase);
-                case NodeValueComparison.EndsWith:
-                    return value1.EndsWith(value2, StringComparison.InvariantCultureIgnoreCase);
-                case NodeValueComparison.Contains:
-                    return value1.ToLowerInvariant().Contains(value2.ToLowerInvariant());
-                default:
-                    return value1 == value2;
-            }
-        }
+                NodeValueComparison.Equals => value1.Equals(value2, StringComparison.InvariantCultureIgnoreCase),
+                NodeValueComparison.StartsWith => value1.StartsWith(value2, StringComparison.InvariantCultureIgnoreCase),
+                NodeValueComparison.EndsWith => value1.EndsWith(value2, StringComparison.InvariantCultureIgnoreCase),
+                NodeValueComparison.Contains => value1.ToLowerInvariant().Contains(value2.ToLowerInvariant()),
+                _ => value1 == value2
+            };
     }
 }
