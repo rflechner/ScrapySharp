@@ -11,8 +11,8 @@
     <PackageReference Include="NUnit" Version="3.13.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ScrapySharp.Core\ScrapySharp.Core.fsproj" />
-    <ProjectReference Include="..\..\ScrapySharp\ScrapySharp.csproj" />
+    <ProjectReference Include="..\..\src\ScrapySharp.Core\ScrapySharp.Core.fsproj" />
+    <ProjectReference Include="..\..\src\\ScrapySharp\ScrapySharp.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Html\Form1.htm">

@@ -17,7 +17,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\ScrapySharp\ScrapySharp.csproj" />
-    <ProjectReference Include="..\ScrapySharp.Tests.CrawlSite\ScrapySharp.Tests.CrawlSite\ScrapySharp.Tests.CrawlSite.csproj" />
+    <ProjectReference Include="..\..\src\ScrapySharp\ScrapySharp.csproj" />
+    <ProjectReference Include="..\ScrapySharp.Tests.CrawlSite\ScrapySharp.Tests.CrawlSite.csproj" />
   </ItemGroup>
 </Project>

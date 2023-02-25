@@ -44,15 +44,11 @@ foreach ($note in $notes) {
     $releaseNotes += $note + "`n"
 }
 
+$artefactFolder = './artefacts'
+
 dotnet restore
-dotnet test ScrapySharp.Tests\ScrapySharp.Tests.csproj
+dotnet test tests\ScrapySharp.Tests\ScrapySharp.Tests.csproj
+dotnet test tests\ScrapySharp.IntegrationTests\ScrapySharp.IntegrationTests.csproj
 dotnet build --configuration release
-dotnet pack --configuration release /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
-if (Test-Path .\release)
-{
-    Remove-Item -Recurse -Force -Path release
-}
-mkdir release
-xcopy .\ScrapySharp\bin\Release\*.nupkg release
-Remove-Item .\ScrapySharp\bin\**\*.nupkg
-Remove-Item .\ScrapySharp.Core\bin\**\*.nupkg
+dotnet pack --configuration release --output $artefactFolder /p:PackageVersion=$version /p:PackageReleaseNotes=$releaseNotes
+
