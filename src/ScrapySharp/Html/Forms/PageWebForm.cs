@@ -168,8 +168,7 @@ namespace ScrapySharp.Html.Forms
 
         public async Task<WebPage> SubmitAsync()
         {
-            Uri url;
-            if (Uri.TryCreate(Action, UriKind.Absolute, out url))
+            if (Uri.TryCreate(Action, UriKind.Absolute, out var url) && url.Scheme.Equals("http") || url.Scheme.Equals("https"))
             {
                 return await browser.NavigateToPageAsync(url, method, SerializeFormFields());
             }

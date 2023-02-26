@@ -143,14 +143,28 @@ namespace ScrapySharp.Network
             
             if (data != null)
             {
-                request.Content = new StringContent(data);
-                if (!string.IsNullOrWhiteSpace(contentType) && MediaTypeHeaderValue.TryParse(contentType, out var contentTypeHeader))
+                if (verb == HttpMethod.Get)
                 {
-                    request.Content.Headers.ContentType = contentTypeHeader;
+                    var uriBuilder = new UriBuilder(url)
+                    {
+                        Query = data
+                    };
+                    rawRequest = new RawRequest(verb.ToString(), uriBuilder.Uri, request.Version, headers);
+                    request.RequestUri = uriBuilder.Uri;
                 }
-                var body = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
-                var requestEncoding = GetContentEncoding(request.Content);
-                rawRequest = new RawRequest(verb.ToString(), url, request.Version, headers, body, requestEncoding);
+                else
+                {
+                    request.Content = new StringContent(data);
+                    if (!string.IsNullOrWhiteSpace(contentType) &&
+                        MediaTypeHeaderValue.TryParse(contentType, out var contentTypeHeader))
+                    {
+                        request.Content.Headers.ContentType = contentTypeHeader;
+                    }
+
+                    var body = await request.Content.ReadAsByteArrayAsync().ConfigureAwait(false);
+                    var requestEncoding = GetContentEncoding(request.Content);
+                    rawRequest = new RawRequest(verb.ToString(), url, request.Version, headers, body, requestEncoding);
+                }
             }
             else
             {
