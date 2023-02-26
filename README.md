@@ -1,10 +1,13 @@
 # Getting started
 
-ScrapySharp has a Web Client able to simulate a real Web browser (handle referrer, cookies …)
+__ScrapySharp__ has a Web Client able to simulate a real Web browser (handle referrer, cookies …)
 
 Html parsing has to be as natural as possible. So I like to use CSS Selectors and Linq.
 
 This framework wraps HtmlAgilityPack.
+
+__ScrapySharp__ is not abble to emulate `javascript`, so scraping dynamic rendered web page is not easy as using selenium.
+
 
 ## Basic examples of CssSelect usages
 
@@ -35,33 +38,27 @@ class Example
 
 ```C#
 
-ScrapingBrowser browser = new ScrapingBrowser();
+var http = new HttpClient();
+var browser = new ModernScrapingBrowser("your-bot-name");
 
-//set UseDefaultCookiesParser as false if a website returns invalid cookies format
-//browser.UseDefaultCookiesParser = false;
+WebPage homePage = await browser.NavigateToPageAsync(new Uri("https://www.nuget.org/"));
 
-WebPage homePage = browser.NavigateToPage(new Uri("http://www.bing.com/"));
-
-PageWebForm form = homePage.FindFormById("sb_form");
+// we find the form using a CSS selector
+var form = homePage.FindFormByCssSelector("div.container form");
+// input text is in texbox named "q"
 form["q"] = "scrapysharp";
-form.Method = HttpVerb.Get;
-WebPage resultsPage = form.Submit();
+// we submit the form
+WebPage resultsPage = await form.SubmitAsync();
 
-HtmlNode[] resultsLinks = resultsPage.Html.CssSelect("div.sb_tlst h3 a").ToArray();
+// we parse search results
+HtmlNode[] resultsLinks = resultsPage.Html.CssSelect("div.package-header a.package-title").ToArray();
+var packagesNames = resultsLinks.Select(l => l.InnerText).ToArray();
 
-WebPage blogPage = resultsPage.FindLinks(By.Text("romcyber blog | Just another WordPress site")).Single().Click();
 ```
 
 ## Install Scrapysharp in your project
 
 It's easy to use Scrapysharp in your project.
 
-A Nuget package exists on [nuget.org](https://www.nuget.org/packages/ScrapySharp) and on [myget](https://www.myget.org/feed/romcyber/package/nuget/ScrapySharp)
+A Nuget package exists on [nuget.org](https://www.nuget.org/packages/ScrapySharp)
 
-## News
-
-Scrapysharp V3 is a reborn.
-
-Old version under GPL license is still on [bitbucket](https://bitbucket.org/rflechner/scrapysharp/src)
-
-Version 3 is a conversion to .net standard 2.0 and a relicensing.

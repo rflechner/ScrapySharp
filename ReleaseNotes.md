@@ -1,6 +1,8 @@
-# 4.0.0
+# 4.0.0-alpha-1
 
-Use of injectable HttpClient.
+- Use of injectable HttpClient.
+- Create ModernScrapingBrowser making ScrapingBrowser obsolete.
+- Breaking changes for more async code.
 
 # 3.0.0
 

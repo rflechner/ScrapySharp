@@ -1,0 +1,66 @@
+#!meta
+
+{"kernelInfo":{"defaultKernelName":"csharp","items":[{"name":"csharp","languageName":"C#","aliases":["c#","C#"]},{"name":"value","aliases":[],"languageName":null},{"name":"vscode","aliases":["frontend"],"languageName":null},{"name":"javascript","languageName":"JavaScript","aliases":["js"]},{"name":"webview","aliases":[]},{"name":".NET","aliases":[],"languageName":null}]}}
+
+#!markdown
+
+# Getting started
+
+__ScrapySharp__ has a Web Client able to simulate a real Web browser (handle referrer, cookies …)
+
+Html parsing has to be as natural as possible. So I like to use CSS Selectors and Linq.
+
+This framework wraps HtmlAgilityPack.
+
+__ScrapySharp__ is not abble to emulate `javascript`, so scraping dynamic rendered web page is not easy as using selenium.
+
+
+## Basic examples
+
+At first, we load dependencies in notebook.
+
+#!csharp
+
+#r "nuget: HtmlAgilityPack, 1.11.33"
+#r"../src/Scrapysharp/bin/Debug/netstandard2.1/Scrapysharp.Core.dll"
+#r"../src/Scrapysharp/bin/Debug/netstandard2.1/Scrapysharp.dll"
+
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using HtmlAgilityPack;
+using ScrapySharp;
+using ScrapySharp.Extensions;
+using ScrapySharp.Network;
+
+#!markdown
+
+We create a fake web browser with user agent.
+In real a project, you should use a `IHttpClientFactory` to instanciate `HttpClient`.
+
+Scraping's politeness consists to create you own user agent like `new UserAgent(botName, publicBotName)` and using it instead of `FakeUserAgents`
+
+#!csharp
+
+var http = new HttpClient();
+var browser = new ModernScrapingBrowser(http, FakeUserAgents.ChromeForIphone);
+
+#!markdown
+
+Now we will try to search something on `nuget.org`
+
+#!csharp
+
+WebPage homePage = await browser.NavigateToPageAsync(new Uri("https://www.nuget.org/"));
+
+// we find the form using a CSS selector
+var form = homePage.FindFormByCssSelector("div.container form");
+// input text is in texbox named "q"
+form["q"] = "scrapysharp";
+// we submit the form
+WebPage resultsPage = await form.SubmitAsync();
+
+// we parse search results
+HtmlNode[] resultsLinks = resultsPage.Html.CssSelect("div.package-header a.package-title").ToArray();
+var packagesNames = resultsLinks.Select(l => l.InnerText).ToArray();
+packagesNames
