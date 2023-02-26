@@ -141,7 +141,7 @@ namespace ScrapySharp.Network
 
             RawRequest rawRequest;
             
-            if (data != null)
+            if (!string.IsNullOrEmpty(data))
             {
                 if (verb == HttpMethod.Get)
                 {
