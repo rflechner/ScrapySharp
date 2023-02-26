@@ -56,7 +56,7 @@ dotnet build --configuration release
 $branch = git branch --show-current
 $buildnumber = [System.DateTime]::Now.Ticks
 
-if ($branch -ne 'master') {
+if ($branch -ne 'master' -and -not($version.Contains('-'))) {
     $versionSuffix = "-$branch-$buildnumber"
     $version = $version + $versionSuffix
 }
