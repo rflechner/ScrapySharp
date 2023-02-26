@@ -127,6 +127,12 @@ namespace ScrapySharp.Network
             return node == null ? null : new PageWebForm(node, browser);
         }
 
+        public PageWebForm FindFormByCssSelector(string selector)
+        {
+            var node = Html.CssSelect(selector).FirstOrDefault();
+            return node == null ? null : new PageWebForm(node, browser);
+        }
+
         private void LoadBaseUrl()
         {
             var baseAttr = html.Descendants("base").Where(e => e.Attributes.Any(a => a.Name == "href"))
