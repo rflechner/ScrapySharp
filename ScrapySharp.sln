@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6755677C-979E-4D67-A21F-FAAF7598A993}"
 	ProjectSection(SolutionItems) = preProject
@@ -10,40 +10,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		ReleaseNotes.txt = ReleaseNotes.txt
 		ScrapySharp.nuspec = ScrapySharp.nuspec
 	EndProjectSection
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrapySharp", "ScrapySharp\ScrapySharp.csproj", "{19858AEA-E842-4633-AF1B-110ED4FE3770}"
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScrapySharp", "ScrapySharp\ScrapySharp.csproj", "{19858AEA-E842-4633-AF1B-110ED4FE3770}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrapySharp.Tests", "ScrapySharp.Tests\ScrapySharp.Tests.csproj", "{99F509FE-B51C-48A8-8C79-DD32AD2FDF10}"
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScrapySharp.Tests", "ScrapySharp.Tests\ScrapySharp.Tests.csproj", "{99F509FE-B51C-48A8-8C79-DD32AD2FDF10}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ScrapySharp.Core", "ScrapySharp.Core\ScrapySharp.Core.fsproj", "{CE27016B-2755-4B44-8A0E-574914B9256F}"
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "ScrapySharp.Core", "ScrapySharp.Core\ScrapySharp.Core.fsproj", "{CE27016B-2755-4B44-8A0E-574914B9256F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{F0E92760-C697-4CC6-8767-8929C6C9898E}"
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D5D992B5-D7B1-4132-A8E1-078513363057}"
-	GlobalSection(HgVSProperties) = preSolution
-		SolutionIsControlled = True
-		SolutionBindings = <Solution Location In Database>
-	EndGlobalSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -101,6 +77,33 @@ Global
 		{19858AEA-E842-4633-AF1B-110ED4FE3770} = {F0E92760-C697-4CC6-8767-8929C6C9898E}
 		{99F509FE-B51C-48A8-8C79-DD32AD2FDF10} = {D5D992B5-D7B1-4132-A8E1-078513363057}
 		{CE27016B-2755-4B44-8A0E-574914B9256F} = {F0E92760-C697-4CC6-8767-8929C6C9898E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3205FC55-E7BE-4700-A812-9B2E39AE8E1B}
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
+	EndGlobalSection
+	GlobalSection(HgVSProperties) = preSolution
+		SolutionIsControlled = True
+		SolutionBindings = <Solution Location In Database>
 	EndGlobalSection
 	GlobalSection(HgVSProperties) = preSolution
 		SolutionIsControlled = True

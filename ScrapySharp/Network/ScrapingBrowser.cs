@@ -30,6 +30,7 @@ namespace ScrapySharp.Network
             Language = CultureInfo.CreateSpecificCulture("EN-US");
             UseDefaultCookiesParser = true;
             IgnoreCookies = false;
+            SkipCertificateValidation = false;
             ProtocolVersion = HttpVersion.Version10;
             KeepAlive = false;
             Proxy = WebRequest.DefaultWebProxy;
@@ -159,6 +160,9 @@ namespace ScrapySharp.Network
             else
                 request.SendChunked = SendChunked;
 
+            if (SkipCertificateValidation)
+                request.ServerCertificateValidationCallback = delegate { return true; };
+
             return request;
         }
 
@@ -175,13 +179,19 @@ namespace ScrapySharp.Network
         private async Task<WebPage> GetResponseAsync(Uri url, HttpWebRequest request, int iteration, byte[] requestBody)
         {
             var response = await GetWebResponseAsync(url, request);
-            var responseStream = response.GetResponseStream();
+            var responseStream = response?.GetResponseStream();
             var headers = request.Headers.AllKeys.Select(k => new KeyValuePair<string, string>(k, request.Headers[k])).ToList();
 
             if (responseStream == null)
+            {
+                var rawResponse = response != null
+                    ? new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, response.Headers, new byte[0], Encoding)
+                    : new RawResponse(request.ProtocolVersion, HttpStatusCode.BadRequest, "", new NameValueCollection(), new byte[0], Encoding);
+
                 return new WebPage(this, url, AutoDownloadPagesResources,
                     new RawRequest(request.Method, request.RequestUri, request.ProtocolVersion, headers, requestBody, Encoding),
-                    new RawResponse(response.ProtocolVersion, response.StatusCode, response.StatusDescription, response.Headers, new byte[0], Encoding), Encoding, AutoDetectCharsetEncoding);
+                    rawResponse, Encoding, AutoDetectCharsetEncoding);
+            }
 
             var body = new MemoryStream();
             responseStream.CopyTo(body);
@@ -278,12 +288,10 @@ namespace ScrapySharp.Network
             {
                 response = (HttpWebResponse)e.Response;
             }
-		
-            var headers = response.Headers;
 
             if (!IgnoreCookies)
             {
-                var cookiesExpression = headers["Set-Cookie"];
+                var cookiesExpression = response?.Headers["Set-Cookie"];
                 if (!string.IsNullOrEmpty(cookiesExpression))
                 {
                     var cookieUrl =
@@ -448,6 +456,8 @@ namespace ScrapySharp.Network
         public bool UseDefaultCookiesParser { get; set; }
 
         public bool IgnoreCookies { get; set; }
+
+        public bool SkipCertificateValidation { get; set; }
 
         public TimeSpan Timeout { get; set; }
 

@@ -22,12 +22,12 @@
     <RepositoryUrl>https://github.com/rflechner/ScrapySharp.git</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="HtmlAgilityPack" Version="1.7.*" />
-    <PackageReference Include="FSharp.Core" Version="4.*" />
-    <PackageReference Include="System.Runtime.Caching" Version="4.5.0-preview1-26216-02" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.11.42" />
+    <PackageReference Include="FSharp.Core" Version="5.0.2" />
+    <PackageReference Include="System.Runtime.Caching" Version="5.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" PrivateAssets="All"/>
+    <ProjectReference Include="..\ScrapySharp.Core\ScrapySharp.Core.fsproj" PrivateAssets="All" />
   </ItemGroup>
   <Target Name="IncludeP2PAssets">
     <ItemGroup>
